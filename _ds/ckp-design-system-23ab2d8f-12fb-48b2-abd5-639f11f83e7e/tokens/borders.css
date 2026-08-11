@@ -1,0 +1,23 @@
+:root{
+  /* Borders — CKP structure is drawn with heavy ink rules, not shadow */
+  --border-hair:1px;
+  --border-regular:2px;
+  --border-heavy:3px;
+  --border-block:3px solid var(--ink);
+  --border-field:2px solid var(--ink);
+
+  /* Radius — the system is square. The only round thing is the logo badge. */
+  --radius-none:0;
+  --radius-badge:999px;
+
+  /* Shadows — hard offset blocks only, never blurred */
+  --shadow-block:5px 5px 0 var(--ink);
+  --shadow-block-sm:3px 3px 0 var(--ink);
+  --shadow-block-crimson:5px 5px 0 var(--ckp-crimson);
+  --shadow-block-navy:5px 5px 0 var(--ckp-navy);
+  --shadow-none:none;
+
+  /* Focus */
+  --focus-ring:3px solid var(--ckp-navy);
+  --focus-offset:2px;
+}

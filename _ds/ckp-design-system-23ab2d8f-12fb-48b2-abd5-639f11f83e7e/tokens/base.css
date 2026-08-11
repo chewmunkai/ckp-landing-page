@@ -1,0 +1,10 @@
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:var(--font-sans);font-size:var(--text-md);line-height:var(--leading-body);color:var(--text-body);background:var(--surface-page);-webkit-font-smoothing:antialiased;text-wrap:pretty}
+h1,h2,h3,h4{font-family:var(--font-display);font-weight:var(--weight-regular);color:var(--text-heading);text-transform:uppercase;letter-spacing:var(--tracking-display);line-height:var(--leading-display);margin:0}
+h1{font-size:var(--display-2)}h2{font-size:var(--display-3)}h3{font-size:var(--display-4)}h4{font-size:var(--display-5);line-height:var(--leading-tight)}
+p{margin:0}
+a{color:var(--text-link);text-decoration:none}
+a:hover{color:var(--text-link-hover)}
+strong{font-weight:var(--weight-semibold);color:var(--text-heading)}
+:focus-visible{outline:var(--focus-ring);outline-offset:var(--focus-offset)}
+::selection{background:var(--ckp-crimson);color:#fff}

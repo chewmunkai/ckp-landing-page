@@ -1,0 +1,67 @@
+:root{
+  /* ---- Brand, sampled directly from assets/ckp-logo.png ---- */
+  --ckp-crimson:#F4064F;
+  --ckp-navy:#1B2687;
+  --ckp-white:#FFFFFF;
+
+  /* ---- Crimson ramp ---- */
+  --crimson-50:#FFF0F4;
+  --crimson-100:#FFD6E1;
+  --crimson-200:#FBA6BF;
+  --crimson-400:#F73C72;
+  --crimson-500:#F4064F;
+  --crimson-600:#D50444;
+  --crimson-700:#AE0336;
+
+  /* ---- Navy ramp ---- */
+  --navy-50:#EEF0FB;
+  --navy-100:#D9DDF4;
+  --navy-200:#AEB5E4;
+  --navy-400:#3B47B5;
+  --navy-500:#1B2687;
+  --navy-600:#161F6E;
+  --navy-700:#101653;
+
+  /* ---- Neutrals ---- */
+  --ink:#0E1233;
+  --gray-700:#454A6B;
+  --gray-500:#5A5F7D;
+  --gray-300:#C9CBDA;
+  --gray-200:#E4E5EE;
+  --gray-100:#F2F3F8;
+  --paper:#FFFFFF;
+
+  /* ---- Semantic status ---- */
+  --success:#0B7A4B;
+  --success-bg:#E6F6EE;
+  --warning:#B26B00;
+  --warning-bg:#FFF3DF;
+  --danger:#D50444;
+  --danger-bg:#FFF0F4;
+  --info:#1B2687;
+  --info-bg:#EEF0FB;
+
+  /* ---- Semantic aliases: text ---- */
+  --text-heading:var(--ink);
+  --text-body:var(--gray-700);
+  --text-muted:var(--gray-500);
+  --text-accent:var(--ckp-crimson);
+  --text-on-crimson:#FFFFFF;
+  --text-on-navy:#FFFFFF;
+  --text-link:var(--navy-500);
+  --text-link-hover:var(--ckp-crimson);
+
+  /* ---- Semantic aliases: surface ---- */
+  --surface-page:var(--paper);
+  --surface-card:var(--paper);
+  --surface-subtle:var(--gray-100);
+  --surface-wash:var(--crimson-50);
+  --surface-crimson:var(--ckp-crimson);
+  --surface-navy:var(--ckp-navy);
+  --surface-ink:var(--ink);
+
+  /* ---- Semantic aliases: line ---- */
+  --line-structural:var(--ink);
+  --line-hair:var(--gray-200);
+  --line-field:var(--ink);
+}

@@ -1,0 +1,11 @@
+node_modules/
+*.log
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local-only editor/agent state (launch.json is committed — it is the dev server config)
+.claude/settings.local.json
+.image-slots.state.json

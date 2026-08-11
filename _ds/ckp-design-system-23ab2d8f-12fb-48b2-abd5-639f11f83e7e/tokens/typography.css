@@ -1,0 +1,41 @@
+:root{
+  /* Families */
+  --font-display:"Archivo Black","Archivo",system-ui,sans-serif;
+  --font-sans:"Archivo",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:ui-monospace,"SFMono-Regular",Menlo,monospace;
+
+  /* Weights — display is single-weight by design */
+  --weight-regular:400;
+  --weight-medium:500;
+  --weight-semibold:600;
+  --weight-bold:700;
+
+  /* Display scale (Archivo Black, uppercase, negative tracking) */
+  --display-1:104px;
+  --display-2:72px;
+  --display-3:56px;
+  --display-4:40px;
+  --display-5:28px;
+
+  /* Body scale (Archivo) */
+  --text-xl:21px;
+  --text-lg:19px;
+  --text-md:17px;
+  --text-base:15px;
+  --text-sm:13.5px;
+  --text-xs:12px;
+
+  /* Line heights */
+  --leading-display:0.9;
+  --leading-tight:1.15;
+  --leading-snug:1.35;
+  --leading-body:1.55;
+  --leading-loose:1.7;
+
+  /* Tracking */
+  --tracking-display:-0.035em;
+  --tracking-tight:-0.015em;
+  --tracking-normal:0;
+  --tracking-label:0.1em;
+  --tracking-eyebrow:0.16em;
+}

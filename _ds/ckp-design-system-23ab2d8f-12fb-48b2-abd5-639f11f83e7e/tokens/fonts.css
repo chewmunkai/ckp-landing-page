@@ -1,0 +1,5 @@
+/* CKP webfonts — Archivo superfamily, served from Google Fonts.
+   SUBSTITUTION NOTE: CKP supplied no font binaries. Archivo Black was chosen to match the
+   heavy geometric letterforms of the CKP wordmark in the logo. Swap these @import lines for
+   local @font-face rules if licensed files arrive. */
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Black&display=swap");
