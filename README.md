@@ -1,10 +1,15 @@
 # CKP Webinar Landing Page
 
+**Live: <https://chewmunkai.github.io/ckp-landing-page/>**
+
 Registration page for the free Chia, Ka & Partners webinar on 8 September 2026 —
 *"If LHDN asked you today, could you prove your company is compliant?"*
 
 It is the destination for a paid ad campaign, so the whole page is built around one
 action: register for the seat.
+
+> **This is a preview, not a live campaign target.** The form does not submit
+> anywhere yet and there is no conversion tracking — see *Before this goes live*.
 
 ## Run it
 
@@ -17,6 +22,19 @@ Then open <http://localhost:4173>.
 It has to be served over HTTP. Opening the HTML from the filesystem fails, because
 Babel Standalone fetches the `.jsx` files over XHR and `file://` blocks that. No
 install step and no dependencies — `serve.js` uses only the Node standard library.
+
+## Deployment
+
+GitHub Pages, from `main` at the repo root. Pushing to `main` redeploys.
+
+Two files exist only to make Pages work, and both must stay:
+
+- **`.nojekyll`** — Pages runs Jekyll by default, and Jekyll silently drops any path
+  starting with an underscore. Without this, the whole `_ds/` design system 404s and
+  the page renders blank.
+- **`index.html`** — a redirect to `CKP Webinar Landing.html`, whose name contains a
+  space and would otherwise only resolve as `CKP%20Webinar%20Landing.html`. The
+  filename is kept as-is because it is what the Claude Design project uses.
 
 ## How it is put together
 
