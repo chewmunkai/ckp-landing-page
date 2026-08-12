@@ -90,16 +90,31 @@ a[href="#register"]{white-space:nowrap}
 .form-body{padding:26px}
 .form-foot{margin-top:26px;padding-top:22px;border-top:2px solid var(--gray-200);display:flex;flex-direction:column;gap:12px}
 .form-note{font-size:13.5px;color:var(--gray-500);line-height:1.5;margin:0;text-align:center}
+/* two-step progress */
+.fsteps{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.fstep-bars{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.fstep-bars i{height:5px;background:var(--gray-200)}
+.fstep-bars i.on{background:var(--ckp-crimson)}
+.fstep-label{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-500)}
+.fback{background:none;border:0;padding:4px 0;cursor:pointer;font-family:'Archivo',sans-serif;font-size:13.5px;font-weight:600;color:var(--gray-500);text-decoration:underline;text-underline-offset:3px}
+.fback:hover{color:var(--ckp-crimson)}
+.form-err{margin:16px 0 0;padding:12px 14px;background:var(--danger-bg);border-left:4px solid var(--danger);color:var(--danger);font-size:14px;font-weight:600;line-height:1.45}
+/* multi-select chips — square, ink-bordered, crimson when picked */
+.chipset{border:0;margin:0;padding:0;min-width:0}
+.chipset legend{padding:0;margin-bottom:10px;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);line-height:1.4}
+.chipset legend span{display:block;margin-top:4px;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500)}
+.chipwrap{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font:inherit;font-size:13px;line-height:1.3;font-weight:500;text-align:left;padding:8px 11px;cursor:pointer;background:#fff;color:var(--gray-700);border:2px solid var(--gray-300);transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
+.chip:hover{border-color:var(--ink);color:var(--ink)}
+.chip.on{background:var(--ckp-crimson);border-color:var(--ckp-crimson);color:#fff}
 .embed-slot{border:2px dashed var(--gray-300);padding:20px;text-align:center;font-size:13px;color:var(--gray-500)}
 /* trust */
 .trust{display:grid;grid-template-columns:auto 1fr;align-items:start}
 .trust-badge{display:flex;align-items:center;align-self:stretch;padding:24px 36px 24px 0;border-right:1px solid var(--gray-200)}
-/* The supplied Xero JPEG carries ~8.6% side and ~14.8% top/bottom white margin baked
-   in, and the mark sits dead centre — so an oversized, centred image inside a box cut
-   to the mark's own 847:416 ratio trims that padding exactly, with no new asset. */
-.xero-mark{display:grid;place-items:center;overflow:hidden;aspect-ratio:847/416;width:100%}
-.xero-mark img{width:120.9%;max-width:none;display:block}
-.trust-badge .xero-mark{width:124px}
+/* xero-platinum-partner.png is the supplied JPEG with its baked-in white field
+   flood-filled to transparency and cropped to the mark. It sits directly on
+   whatever background it lands on — no white plate needed. */
+.trust-badge img{width:138px;height:auto}
 .trust-list{display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0}
 .trust-list li{list-style:none;padding:24px 18px;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .trust-list li:last-child{border-right:0;padding-right:0}
@@ -233,7 +248,8 @@ a[href="#register"]{white-space:nowrap}
 /* footer */
 .ftr{background:var(--ink);color:rgba(255,255,255,.72);padding:72px 0 40px;font-size:15px}
 .ftr-grid{display:grid;grid-template-columns:auto 1fr auto;gap:56px;align-items:start}
-.ftr-badge{background:#fff;padding:10px 12px;width:176px}
+.ftr-badge{width:172px}
+.ftr-badge img{width:100%;height:auto}
 .ftr a{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
 .ftr a:hover{color:var(--crimson-200);border-bottom-color:var(--crimson-200)}
 .ftr-name{font-family:'Archivo Black',system-ui,sans-serif;color:#fff;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 0 12px}

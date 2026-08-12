@@ -16,8 +16,8 @@ function SectionThree() {
         <Reveal className="stack-32" style={{ marginBottom: 56 }}>
           <Badge tone="outline" style={{ alignSelf: 'flex-start' }}>What you leave with</Badge>
           <div style={{ display: 'grid', gridTemplateColumns: 'minmax(280px,1.05fr) 1fr', gap: 64, alignItems: 'end' }} className="s3-grid">
-            <Head2 a="One hour. Six answers" b="you can act on the same week." />
-            <p className="body" style={{ maxWidth: '44ch' }}>Not an accounting lecture. Six decisions only you can make, and what each one costs you if you make it late.</p>
+            <Head2 a="1 hour. 6 answers" b="you can act on the same week." />
+            <p className="body" style={{ maxWidth: '44ch' }}>Not an accounting lecture. 6 decisions only you can make, and what each one costs you if you make it late.</p>
           </div>
         </Reveal>
         <Reveal className="dgrid">
@@ -81,7 +81,7 @@ function SectionFour() {
             </div>
             <div className="vside">
               <h3 className="disp h2" style={{ fontSize: 'clamp(24px,2.2vw,32px)' }}>Businesses we’ve helped <span className="tint">in the past.</span></h3>
-              <p className="body" style={{ maxWidth: '40ch' }}>Five owners. No scripts. What changed once one team could see the whole company instead of a slice of it.</p>
+              <p className="body" style={{ maxWidth: '40ch' }}>5 owners. No scripts. What changed once one team could see the whole company instead of a slice of it.</p>
               <div className="vstrip">
                 {VIDEOS.map((v, i) => (
                   <button type="button" key={v.id} onClick={() => setPlaying(i)}
@@ -106,9 +106,9 @@ function SectionFour() {
 }
 
 const FAQS = [
-  { q: 'Is this going to turn into a one-hour sales pitch?', a: 'No. It is 52 minutes of teaching and 8 minutes on what CKP does, and we tell you when that part starts so you can judge it for yourself. Everything taught works with the accountant and company secretary you already have. You do not need to hire us to use any of it.' },
+  { q: 'Is this going to turn into a 1-hour sales pitch?', a: 'No. It is 52 minutes of teaching and 8 minutes on what CKP does, and we tell you when that part starts so you can judge it for yourself. Everything taught works with the accountant and company secretary you already have. You do not need to hire us to use any of it.' },
   { q: 'I already have an accountant. Will this conflict with them?', a: 'No. Nobody is being replaced and nobody is being blamed. This is about the owner-level decisions no adviser can make on your behalf, and about getting everyone who supports your company working from the same picture. Bring your accountant. Bring whoever runs your payroll. It works better when they hear it too.' },
-  { q: 'Can I ask about my own company without discussing it publicly?', a: 'Yes. Cameras stay off for everyone and your questions go into the chat, not onto the screen. For anything you would rather not type at all, Xin Lei and Carissa, the two partners who lead CKP’s client work, hold private 30-minute reviews after the session. That conversation stays between you and CKP.' },
+  { q: 'Can I ask about my own company without discussing it publicly?', a: 'Yes. Cameras stay off for everyone and your questions go into the chat, not onto the screen. For anything you would rather not type at all, Xin Lei and Carissa, the 2 partners who lead CKP’s client work, hold private 30-minute reviews after the session. That conversation stays between you and CKP.' },
   { q: 'What if I cannot attend live?', a: 'Come live if you can. The Q&A is the part a recording cannot give you, because that is where your own situation gets answered. If the date genuinely does not work, register anyway and CKP will invite you to the next one.' }
 ];
 
@@ -134,7 +134,7 @@ function FinalCTA({ onDone }) {
           <span className="eyebrow eyebrow-block" style={{ alignSelf: 'flex-start' }}>Last step</span>
           <h2 className="disp h2 on-dark" style={{ fontSize: 'clamp(30px,3.1vw,46px)', maxWidth: '17ch' }}><span className="lead">Your company may already be fine.</span>You deserve to know, not assume.</h2>
           <p className="lede muted-on-crimson measure">Swap “I think everything should be okay” for knowing. Your structure, your deadlines, your payroll, your books.</p>
-          <p className="body" style={{ color: '#fff', fontWeight: 600 }}>One hour now, or an unknown bill later. That is the whole trade.</p>
+          <p className="body" style={{ color: '#fff', fontWeight: 600 }}>60 minutes now, or an unknown bill later. That is the whole trade.</p>
           <div className="final-line">
             {['Free', '8 September 2026', CFG.time, 'Online', '40 seats', '20 private review slots'].map((t) => <span key={t}>{t}</span>)}
           </div>
@@ -152,7 +152,7 @@ function Footer() {
       <div className="wrap">
         <div className="ftr-grid">
           <div className="stack-16">
-            <div className="ftr-badge"><span className="xero-mark"><img src="assets/xero-platinum-partner.jpg" alt="Xero Platinum Partner" /></span></div>
+            <div className="ftr-badge"><img src="assets/xero-platinum-partner.png" alt="Xero Platinum Partner" width="420" height="205" /></div>
             <p style={{ margin: 0, maxWidth: '34ch', fontSize: 14 }}>Chia, Ka &amp; Partners is a Xero Platinum Partner. Learn more at <a href="https://www.xero.com" target="_blank" rel="noopener">xero.com</a></p>
           </div>
           <div>

@@ -34,8 +34,8 @@ function Hero({ onDone }) {
               <div className="chips">{['Free 60-minute webinar', '8 September 2026', CFG.time].map((t) => <span key={t}>{t}</span>)}</div>
               <h1 className="disp h1 on-dark"><span className="lead">If LHDN asked you today,</span>could you prove your company is compliant?</h1>
               <div className="hero-copy">
-                <p className="hero-lede">Most owners cannot. Not because they are careless, but because three different people each hold one piece of the answer, and none of them hold all of it.</p>
-                <p className="hero-sub">One hour, cameras off, nothing to prepare. You leave knowing what is covered, what to check, and what to fix first.</p>
+                <p className="hero-lede">Most owners cannot. Not because they are careless, but because 3 different people each hold one piece of the answer, and none of them hold all of it.</p>
+                <p className="hero-sub">60 minutes, cameras off, nothing to prepare. You leave knowing what is covered, what to check, and what to fix first.</p>
               </div>
               <div className="hero-act">
                 <Button as="a" href="#register" variant="secondary" size="lg">Save My Free Seat</Button>
@@ -64,7 +64,7 @@ function TrustStrip() {
   return (
     <div className="rule-b">
       <div className="wrap trust">
-        <div className="trust-badge"><span className="xero-mark"><img src="assets/xero-platinum-partner.jpg" alt="Xero Platinum Partner" /></span></div>
+        <div className="trust-badge"><img src="assets/xero-platinum-partner.png" alt="Xero Platinum Partner" width="420" height="205" /></div>
         <ul className="trust-list">{items.map((t) => <li key={t}><span>{t}</span></li>)}</ul>
       </div>
     </div>
@@ -80,7 +80,7 @@ const COVERAGE = [
 ];
 
 const FALLS_THROUGH = [
-  'Three staff hired last month',
+  '3 staff hired last month',
   'A financial year end that no longer fits',
   'Books that cannot support your tax estimate'
 ];
@@ -131,7 +131,7 @@ function SectionOne() {
         </div>
       </div>
       <div className="wrap" style={{ marginTop: 32 }}>
-        <p className="lede strong-ink">You will leave this hour able to answer all three.</p>
+        <p className="lede strong-ink">You will leave this hour able to answer all 3.</p>
       </div>
     </section>
   );
@@ -150,7 +150,7 @@ function SectionTwo() {
   const rows = [
     ['CP204 instalment, by the 15th', '10% is added to the bill. No warning, no reminder, no appeal.'],
     ['EPF, SOCSO and EIS, by the 15th', 'Charges accrue every day it stays unpaid, and they do not stop.'],
-    ['Employer registration, before the first hire', 'Backdated to your first employee’s day one, across all three funds at once.'],
+    ['Employer registration, before the first hire', 'Backdated to your first employee’s day one, across all 3 funds at once.'],
     ['Books kept clean and current', 'The loan is declined. The tender closes without you.']
   ];
   return (
@@ -178,8 +178,8 @@ function SectionTwo() {
             <tbody>{rows.map(([a, b]) => <tr key={a}><td>{a}</td><td>{b}</td></tr>)}</tbody>
           </table>
           <div className="payoff">
-            <b>In sixty minutes you will know which of these you have already passed, which are overdue, and which one to fix first.</b>
-            <span>No chasing three people. No jargon. No homework afterwards.</span>
+            <b>In 60 minutes you will know which of these you have already passed, which are overdue, and which one to fix first.</b>
+            <span>No chasing 3 people. No jargon. No homework afterwards.</span>
           </div>
         </Reveal>
       </div>
@@ -206,7 +206,7 @@ function SectionTwo() {
           <div className="merge-into">
             <span className="mi-eyebrow">The whole company, in one place</span>
             <p className="mi-label">One connected view</p>
-            <p className="mi-body">One team. One set of numbers. Every deadline visible before it arrives instead of after. That is how you answer all three questions yourself, in ten seconds, without picking up the phone.</p>
+            <p className="mi-body">One team. One set of numbers. Every deadline visible before it arrives instead of after. That is how you answer all 3 questions yourself, in 10 seconds, without picking up the phone.</p>
             <p className="mi-sig">That is what CKP walks you through in this session.</p>
           </div>
         </div>
