@@ -127,18 +127,29 @@ function SectionFive() {
 }
 
 function FinalCTA({ onDone }) {
+  const left = Math.max(0, CFG.seatsTotal - CFG.seatsTaken);
   return (
     <section className="final sec" id="register-2-anchor">
       <div className="wrap final-grid">
-        <div className="stack-24">
-          <span className="eyebrow eyebrow-block" style={{ alignSelf: 'flex-start' }}>Last step</span>
-          <h2 className="disp h2 on-dark" style={{ fontSize: 'clamp(30px,3.1vw,46px)', maxWidth: '17ch' }}><span className="lead">Your company may already be fine.</span>You deserve to know, not assume.</h2>
-          <p className="lede muted-on-crimson measure">Swap “I think everything should be okay” for knowing. Your structure, your deadlines, your payroll, your books.</p>
-          <p className="body" style={{ color: '#fff', fontWeight: 600 }}>60 minutes now, or an unknown bill later. That is the whole trade.</p>
-          <div className="final-line">
-            {['Free', '8 September 2026', CFG.time, 'Online', '40 seats', '20 private review slots'].map((t) => <span key={t}>{t}</span>)}
+        <div className="final-left">
+          <span className="final-eyebrow">Still unsure this is for you?</span>
+          <h2 className="disp final-h2">
+            <span className="fh-a">Your company may already be fine.</span>
+            <span className="fh-b">You deserve to know, not assume.</span>
+          </h2>
+          <p className="final-lede">Swap “I think everything should be okay” for knowing. Your structure, your deadlines, your payroll, your books.</p>
+          <div className="final-meta">
+            <span>Free</span>
+            <span>8 September 2026</span>
+            <span>{CFG.time}</span>
+            <span>Online</span>
           </div>
-          <p className="body muted-on-crimson measure-sm" style={{ fontSize: 16 }}>Built for owners and directors. Bring the person who handles your books, payroll or compliance if you want everyone aligned.</p>
+          <div className="final-meta">
+            <span className="fm-live"><i />{left} of {CFG.seatsTotal} seats left</span>
+            <span>20 private review slots</span>
+          </div>
+          <p className="final-note">60 minutes now, or an unknown bill later. That is the whole trade.</p>
+          <p className="final-small">Built for owners and directors. Bring whoever handles your books, payroll or compliance if you want everyone aligned.</p>
         </div>
         <RegistrationForm id="register-2" onDone={onDone} />
       </div>
