@@ -111,10 +111,8 @@ a[href="#register"]{white-space:nowrap}
 .form-err{margin:16px 0 0;padding:12px 14px;background:var(--danger-bg);border-left:4px solid var(--danger);color:var(--danger);font-size:14px;font-weight:600;line-height:1.45}
 /* multi-select chips — square, ink-bordered, crimson when picked */
 .chipset{border:0;margin:0;padding:0;min-width:0}
-.chip-toggle{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;background:var(--gray-100);border:2px dashed var(--gray-300);font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);text-align:left}
-.chip-toggle:hover{border-color:var(--ink)}
-.chip-toggle>span{font-size:17px;line-height:1;color:var(--ckp-crimson);width:12px;flex:none}
-.chip-toggle>em{margin-left:auto;font-style:normal;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500);text-transform:none}
+.chipset legend{padding:0;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);line-height:1.4}
+.chipset legend span{display:block;margin-top:3px;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500);text-transform:none}
 .chipwrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{font:inherit;font-size:12.5px;line-height:1.3;font-weight:500;text-align:left;min-height:44px;padding:10px 11px;cursor:pointer;background:#fff;color:var(--gray-700);border:2px solid var(--gray-300);transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
 .chip:hover{border-color:var(--ink);color:var(--ink)}
@@ -127,7 +125,7 @@ a[href="#register"]{white-space:nowrap}
    flood-filled to transparency and cropped to the mark. It sits directly on
    whatever background it lands on — no white plate needed. */
 .trust-badge img{width:138px;height:auto}
-.trust-list{display:grid;grid-template-columns:repeat(5,1fr);margin:0;padding:0}
+.trust-list{display:grid;grid-template-columns:repeat(6,1fr);margin:0;padding:0}
 .trust-list li{list-style:none;padding:24px 18px;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .trust-list li:last-child{border-right:0;padding-right:0}
 .trust-list li:before{content:'';width:18px;height:3px;background:var(--ckp-crimson);flex:none}
@@ -288,6 +286,9 @@ a[href="#register"]{white-space:nowrap}
 .ftr a{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
 .ftr a:hover{color:var(--crimson-200);border-bottom-color:var(--crimson-200)}
 .ftr-name{font-family:'Archivo Black',system-ui,sans-serif;color:#fff;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 0 12px}
+.ftr-contacts{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;margin:0 0 14px;padding:12px 0;border-top:1px solid rgba(255,255,255,.18);border-bottom:1px solid rgba(255,255,255,.18)}
+.ftr-contacts span{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6)}
+.ftr-contacts a{font-weight:600;font-size:14.5px;white-space:nowrap}
 .ftr-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;gap:24px;font-size:13px;flex-wrap:wrap}
 /* sticky cta */
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--ink);border-top:3px solid var(--ckp-crimson);transform:translateY(102%);transition:transform 180ms cubic-bezier(.22,.9,.28,1)}
@@ -310,7 +311,8 @@ a[href="#register"]{white-space:nowrap}
 .ty-step{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
 .ty-step b{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.1em;color:#fff;background:var(--ink);padding:6px 10px;font-weight:400}
 @media (max-width:1180px){
-.trust-list li{padding:22px 13px}
+.trust-list{grid-template-columns:repeat(3,1fr)}
+.trust-list li{padding:18px 13px}
 .trust-list li span{font-size:11.5px;letter-spacing:.02em;line-height:1.4}
 .trust-badge{padding-right:26px}
 .trust-badge img{width:100px}

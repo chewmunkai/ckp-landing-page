@@ -1,8 +1,9 @@
 /* ---- Everything you need to edit lives in this block ---- */
 const CFG = {
-  time: '8:00 PM (GMT+8)',          // derived from eventStart below — keep the two in sync
+  time: '3:00 PM – 4:00 PM (GMT+8)', // full range — keep in sync with eventStart below
+  timeShort: '3:00 PM',             // for the header and sticky bar, where the range does not fit
   language: '{{LANGUAGE}}',         // e.g. 'English' — not rendered anywhere on the page today
-  eventStart: '2026-09-08T20:00:00+08:00', // drives the countdown — set the real start time
+  eventStart: '2026-09-08T15:00:00+08:00', // drives the countdown — set the real start time
   seatsTotal: 40,
   seatsTaken: 17,                   // PLACEHOLDER — set the real number of seats already booked
   formEmbedUrl: '',                 // paste your Zoho / HubSpot / Google Form embed URL here; the styled form below is used while this is empty

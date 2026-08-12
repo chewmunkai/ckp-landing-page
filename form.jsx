@@ -54,11 +54,9 @@ function RegistrationForm({ id, onDone }) {
   const [role, setRole] = React.useState('');
   const [worry, setWorry] = React.useState('');
   const [areas, setAreas] = React.useState([]);
-  const [showAreas, setShowAreas] = React.useState(false);
   const [err, setErr] = React.useState('');
   const formRef = React.useRef(null);
 
-  const needsDirector = role === 'Manager' || role === 'Staff';
   const needsOther = worry === 'Other';
 
   if (CFG.formEmbedUrl) {
@@ -88,7 +86,6 @@ function RegistrationForm({ id, onDone }) {
     if (!val('whatsapp')) return setErr('Please add your WhatsApp number, that is where the link goes.');
     if (!val('company')) return setErr('Please add your company name.');
     if (!role) return setErr('Please choose your role.');
-    if (needsDirector && !val('director')) return setErr('Please add the name you are registering for.');
     setErr('');
     setStep(2);
   };
@@ -135,11 +132,6 @@ function RegistrationForm({ id, onDone }) {
           <Select id={`${id}-role`} label="Your role" name="role" placeholder="Select one" value={role}
             onChange={(e) => { setRole(e.target.value); setErr(''); }}
             options={['Owner', 'Director', 'Manager', 'Staff']} />
-          {needsDirector && (
-            <Input id={`${id}-director`} label="Who are you registering on behalf of?" name="director"
-              hint="So we can address the session to the right person."
-              placeholder="Director's name" />
-          )}
         </div>
 
         <div className="fstack" hidden={step !== 2}>
@@ -158,24 +150,16 @@ function RegistrationForm({ id, onDone }) {
           <Select id={`${id}-confidence`} label="How compliant do you feel today?"
             name="confidence" placeholder="Select one" options={Q_CONFIDENCE} />
 
-          {/* Optional, and 7 chips cost ~300px — so it stays folded until asked for */}
           <fieldset className="chipset">
-            <button type="button" className="chip-toggle" aria-expanded={showAreas}
-              onClick={() => setShowAreas((v) => !v)}>
-              <span>{showAreas ? '–' : '+'}</span>
-              Areas you want covered
-              <em>{areas.length ? `${areas.length} picked` : 'Optional'}</em>
-            </button>
-            {showAreas && (
-              <div className="chipwrap">
-                {Q_AREAS.map((a) => (
-                  <button type="button" key={a} onClick={() => toggleArea(a)}
-                    className={'chip' + (areas.includes(a) ? ' on' : '')} aria-pressed={areas.includes(a)}>
-                    {a}
-                  </button>
-                ))}
-              </div>
-            )}
+            <legend>Which area would you most like to understand better? <span>Pick any that apply</span></legend>
+            <div className="chipwrap">
+              {Q_AREAS.map((a) => (
+                <button type="button" key={a} onClick={() => toggleArea(a)}
+                  className={'chip' + (areas.includes(a) ? ' on' : '')} aria-pressed={areas.includes(a)}>
+                  {a}
+                </button>
+              ))}
+            </div>
             <input type="hidden" name="areas" value={areas.join(' | ')} />
           </fieldset>
         </div>

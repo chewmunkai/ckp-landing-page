@@ -6,7 +6,7 @@ const DECISIONS = [
   ['03', 'The cheapest legal way to pay yourself', 'Salary, director’s fee or dividend, and what each one actually costs you.'],
   ['04', 'How to hire without backdated bills', 'The registrations that must happen before your first hire, in the right order.'],
   ['05', 'Whether your books would survive a request', 'A loan application, tax estimate, audit or tender. Would your records hold up?'],
-  ['06', 'A second pair of eyes on your numbers', 'A private 30-minute review with a CKP partner, using your own numbers. No obligation, no pitch. 20 slots, because that is how many Xin Lei and Carissa can personally take.']
+  ['06', 'A second pair of eyes on your numbers', 'A private 30-minute session with the CKP team, using your own numbers. No obligation, no pitch. 20 slots, because that is how many the team can personally take.']
 ];
 
 function SectionThree() {
@@ -36,7 +36,7 @@ function SectionThree() {
 
 const CREDS = [
   'CA(M), ACCA, HRDF Certified Trainer',
-  'Co-founded Chia, Ka & Partners in 2015; now serves 300+ SME clients across Malaysia',
+  'Co-founded Chia, Ka & Partners in 2015; now serves 800+ successful clients worldwide',
   'Former Mazars auditor covering public-listed companies across property, shipping and FMCG',
   'Deep experience in due diligence and acquisition advisory across oil and gas, manufacturing and logistics',
   'Co-author of Why Breakeven; featured by The Star, Xero Asia and ISCA',
@@ -94,7 +94,7 @@ function SectionFour() {
                 ))}
               </div>
               <div className="vcta">
-                <p className="vcta-stat"><b>300+</b> SME clients across Malaysia, from Kedah to Sabah.</p>
+                <p className="vcta-stat"><b>800+</b> successful clients worldwide.</p>
                 <Btn as="a" href="#register" size="md">Save My Free Seat</Btn>
               </div>
             </div>
@@ -108,7 +108,7 @@ function SectionFour() {
 const FAQS = [
   { q: 'Is this going to turn into a 1-hour sales pitch?', a: 'No. It is 52 minutes of teaching and 8 minutes on what CKP does, and we tell you when that part starts so you can judge it for yourself. Everything taught works with the accountant and company secretary you already have. You do not need to hire us to use any of it.' },
   { q: 'I already have an accountant. Will this conflict with them?', a: 'No. Nobody is being replaced and nobody is being blamed. This is about the owner-level decisions no adviser can make on your behalf, and about getting everyone who supports your company working from the same picture. Bring your accountant. Bring whoever runs your payroll. It works better when they hear it too.' },
-  { q: 'Can I ask about my own company without discussing it publicly?', a: 'Yes. Cameras stay off for everyone and your questions go into the chat, not onto the screen. For anything you would rather not type at all, Xin Lei and Carissa, the 2 partners who lead CKP’s client work, hold private 30-minute reviews after the session. That conversation stays between you and CKP.' },
+  { q: 'Can I ask about my own company without discussing it publicly?', a: 'Yes. Cameras stay off for everyone and your questions go into the chat, not onto the screen. For anything you would rather not type at all, the CKP team holds private 30-minute sessions after the webinar. That conversation stays between you and CKP. You can also message Xin Lei on +60 12-862 7298 or Carissa on +60 12-985 3980 at any time.' },
   { q: 'What if I cannot attend live?', a: 'Come live if you can. The Q&A is the part a recording cannot give you, because that is where your own situation gets answered. If the date genuinely does not work, register anyway and CKP will invite you to the next one.' }
 ];
 
@@ -168,7 +168,12 @@ function Footer() {
           </div>
           <div>
             <p className="ftr-name">Chia, Ka &amp; Partners PLT (LLP0005573-LCA)</p>
-            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+60 3-7772 4711 · <a href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a>
+            <div className="ftr-contacts">
+              <span>Questions before the day?</span>
+              <a href="https://wa.me/60128627298" target="_blank" rel="noopener">Xin Lei · +60 12-862 7298</a>
+              <a href="https://wa.me/60129853980" target="_blank" rel="noopener">Carissa · +60 12-985 3980</a>
+            </div>
+            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+603-9212 7856 · <a href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a>
               {/* Only render once a real URL is set — an unresolved placeholder would
                   ship a dead link, which is worse than omitting the line. */}
               {/^https?:\/\//.test(CFG.privacyUrl) && (

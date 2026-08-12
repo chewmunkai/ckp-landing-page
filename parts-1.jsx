@@ -16,7 +16,7 @@ function Header() {
           </div>
         </div>
         <div className="hdr-meta">
-          <span className="eyebrow" style={{ color: 'var(--gray-500)' }}>{`8 Sep 2026 · ${CFG.time}`}</span>
+          <span className="eyebrow" style={{ color: 'var(--gray-500)' }}>{`8 Sep 2026 · ${CFG.timeShort}`}</span>
           <Button as="a" href="#register" size="sm">Save My Free Seat</Button>
         </div>
       </div>
@@ -60,7 +60,7 @@ function Hero({ onDone }) {
 }
 
 function TrustStrip() {
-  const items = ['Xero Platinum Partner', 'Xero Malaysia Partner of the Year 2022', 'Licensed company secretary', 'Chartered accountants, LLP0005573-LCA', 'Trusted by 300+ SME clients across Malaysia'];
+  const items = ['Xero Platinum Partner', 'Xero Partner of the Year (Malaysia) 2025', 'Xero Advisory Partner of the Year 2025', 'Licensed company secretary', 'Chartered accountants, LLP0005573-LCA', '800+ successful clients worldwide'];
   return (
     <div className="rule-b">
       <div className="wrap trust">
@@ -76,7 +76,7 @@ function TrustStrip() {
 const COVERAGE = [
   ['Your accountant', 'Works from the records you hand over'],
   ['Your company secretary', 'Files what SSM asks for'],
-  ['Payroll', 'Pays EPF, SOCSO and EIS each month']
+  ['Payroll', 'Pays EPF, SOCSO, EIS, PCB and SKBBK each month']
 ];
 
 const FALLS_THROUGH = [
@@ -143,13 +143,13 @@ const CLOCK = [
   ['Within 30 days', 'Corporate bank account, SST if applicable, and any SSM change filed'],
   ['Within 90 days', 'Tax registration, CP204, auditor and tax agent appointed, books started'],
   ['Within 18 months', 'Year end set, first accounts, first audit, first annual return'],
-  ['Every month', 'EPF, SOCSO, EIS and PCB, by the 15th, without fail']
+  ['Every month', 'EPF, SOCSO, EIS, PCB and SKBBK by the 15th, plus monthly management accounts so you know your performance and tax estimate']
 ];
 
 function SectionTwo() {
   const rows = [
     ['CP204 instalment, by the 15th', '10% is added to the bill. No warning, no reminder, no appeal.'],
-    ['EPF, SOCSO and EIS, by the 15th', 'Charges accrue every day it stays unpaid, and they do not stop.'],
+    ['EPF, SOCSO, EIS, PCB and SKBBK, by the 15th', 'Charges accrue every day it stays unpaid, and they do not stop.'],
     ['Employer registration, before the first hire', 'Backdated to your first employee’s day one, across all 3 funds at once.'],
     ['Books kept clean and current', 'The loan is declined. The tender closes without you.']
   ];
@@ -189,7 +189,7 @@ function SectionTwo() {
             {[
               ['Company secretary', 'SSM filings, director and shareholder changes'],
               ['The books', 'Every transaction, reconciled monthly'],
-              ['Payroll', 'EPF, SOCSO, EIS and PCB, by the 15th']
+              ['Payroll', 'EPF, SOCSO, EIS, PCB and SKBBK, by the 15th']
             ].map(([t, d], i) => (
               <div className="msrc" key={t}>
                 <span className="msrc-n">{'0' + (i + 1)}</span>
