@@ -55,7 +55,7 @@ function SectionFour() {
           <Head2 a="Learn from someone who sees these issues" b="inside real Malaysian businesses every week." style={{ maxWidth: '22ch' }} />
         </Reveal>
         <Reveal className="jgrid">
-          <div className="jphoto"><img src="assets/jeremy-chia.png" alt="Jeremy Chia, Managing Partner, Chia, Ka &amp; Partners" /></div>
+          <div className="jphoto"><img src="assets/jeremy-chia.png" alt="Jeremy Chia, Managing Partner, Chia, Ka &amp; Partners" width="719" height="1080" /></div>
           <div className="stack-32">
             <div>
               <h3 className="jname">Jeremy Chia</h3>
@@ -71,7 +71,7 @@ function SectionFour() {
               {playing === null ? (
                 <button type="button" className="vposter" onClick={() => setPlaying(0)}
                   aria-label="Play the first client story">
-                  <img src={VIDEOS[0].poster} alt="" />
+                  <img src={VIDEOS[0].poster} alt="" width="500" height="889" />
                   <span className="vplay"></span>
                 </button>
               ) : (
@@ -88,7 +88,7 @@ function SectionFour() {
                     className={'vthumb' + (shown === i ? ' on' : '')}
                     aria-pressed={shown === i}
                     aria-label={`Play client story ${i + 1} of ${VIDEOS.length}`}>
-                    <img src={v.poster} alt="" loading="lazy" />
+                    <img src={v.poster} alt="" loading="lazy" width="500" height="889" />
                     <span className="vplay vplay--sm"></span>
                   </button>
                 ))}
@@ -157,7 +157,13 @@ function Footer() {
           </div>
           <div>
             <p className="ftr-name">Chia, Ka &amp; Partners PLT (LLP0005573-LCA)</p>
-            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+60 3-7772 4711 · <a href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a><br />Privacy policy: <a href={CFG.privacyUrl}>{CFG.privacyUrl}</a></p>
+            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+60 3-7772 4711 · <a href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a>
+              {/* Only render once a real URL is set — an unresolved placeholder would
+                  ship a dead link, which is worse than omitting the line. */}
+              {/^https?:\/\//.test(CFG.privacyUrl) && (
+                <React.Fragment><br />Privacy policy: <a href={CFG.privacyUrl}>{CFG.privacyUrl}</a></React.Fragment>
+              )}
+            </p>
           </div>
           <div><Btn as="a" href="#register" variant="inverse" size="md">Save My Free Seat</Btn></div>
         </div>

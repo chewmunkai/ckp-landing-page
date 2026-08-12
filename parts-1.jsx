@@ -9,7 +9,7 @@ function Header() {
     <header className="hdr">
       <div className="wrap hdr-in">
         <div className="hdr-brand">
-          <img src="assets/ckp-logo.png" alt="CKP" />
+          <img src="assets/ckp-logo.png" alt="CKP" width="411" height="411" />
           <div>
             <div className="hdr-name">Chia, Ka &amp; Partners</div>
             <div className="hdr-sub">Chartered Accountants · Kuala Lumpur</div>
