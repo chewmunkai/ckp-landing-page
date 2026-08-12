@@ -54,6 +54,7 @@ function RegistrationForm({ id, onDone }) {
   const [role, setRole] = React.useState('');
   const [worry, setWorry] = React.useState('');
   const [areas, setAreas] = React.useState([]);
+  const [showAreas, setShowAreas] = React.useState(false);
   const [err, setErr] = React.useState('');
   const formRef = React.useRef(null);
 
@@ -122,11 +123,15 @@ function RegistrationForm({ id, onDone }) {
         </div>
 
         {/* Step 1 is kept mounted so its values survive the trip to step 2 */}
-        <div className="stack-16" hidden={step !== 1}>
-          <Input id={`${id}-name`} label="Name" name="name" placeholder="Your full name" />
+        <div className="fstack" hidden={step !== 1}>
+          {/* the two short fields share a row — on its own each wasted half the card */}
+          <div className="frow">
+            {/* short placeholders: these two fields are half-width and longer ones truncate */}
+            <Input id={`${id}-name`} label="Name" name="name" placeholder="Full name" />
+            <Input id={`${id}-company`} label="Company" name="company" placeholder="Sdn Bhd" />
+          </div>
           <Input id={`${id}-whatsapp`} label="WhatsApp number" name="whatsapp" prefix="+60"
             hint="Your joining link is sent here." placeholder="12 345 6789" />
-          <Input id={`${id}-company`} label="Company name" name="company" placeholder="Company Sdn Bhd" />
           <Select id={`${id}-role`} label="Your role" name="role" placeholder="Select one" value={role}
             onChange={(e) => { setRole(e.target.value); setErr(''); }}
             options={['Owner', 'Director', 'Manager', 'Staff']} />
@@ -137,7 +142,7 @@ function RegistrationForm({ id, onDone }) {
           )}
         </div>
 
-        <div className="stack-16" hidden={step !== 2}>
+        <div className="fstack" hidden={step !== 2}>
           <Select id={`${id}-stage`} label="What stage is your business at?" name="stage"
             placeholder="Select one" options={Q_STAGE} />
           <Select id={`${id}-worry`} label="Your biggest compliance worry right now" name="worry"
@@ -148,21 +153,29 @@ function RegistrationForm({ id, onDone }) {
             <Input id={`${id}-worryOther`} name="worryOther" label="Tell us what it is"
               placeholder="In a few words" />
           )}
-          <Select id={`${id}-firm`} label="Already working with an accounting or company secretary firm?"
+          <Select id={`${id}-firm`} label="Already using an accounting firm?"
             name="firm" placeholder="Select one" options={Q_FIRM} />
-          <Select id={`${id}-confidence`} label="How confident are you that you are compliant?"
+          <Select id={`${id}-confidence`} label="How compliant do you feel today?"
             name="confidence" placeholder="Select one" options={Q_CONFIDENCE} />
 
+          {/* Optional, and 7 chips cost ~300px — so it stays folded until asked for */}
           <fieldset className="chipset">
-            <legend>Which areas would you most like to understand? <span>Optional · pick any</span></legend>
-            <div className="chipwrap">
-              {Q_AREAS.map((a) => (
-                <button type="button" key={a} onClick={() => toggleArea(a)}
-                  className={'chip' + (areas.includes(a) ? ' on' : '')} aria-pressed={areas.includes(a)}>
-                  {a}
-                </button>
-              ))}
-            </div>
+            <button type="button" className="chip-toggle" aria-expanded={showAreas}
+              onClick={() => setShowAreas((v) => !v)}>
+              <span>{showAreas ? '–' : '+'}</span>
+              Areas you want covered
+              <em>{areas.length ? `${areas.length} picked` : 'Optional'}</em>
+            </button>
+            {showAreas && (
+              <div className="chipwrap">
+                {Q_AREAS.map((a) => (
+                  <button type="button" key={a} onClick={() => toggleArea(a)}
+                    className={'chip' + (areas.includes(a) ? ' on' : '')} aria-pressed={areas.includes(a)}>
+                    {a}
+                  </button>
+                ))}
+              </div>
+            )}
             <input type="hidden" name="areas" value={areas.join(' | ')} />
           </fieldset>
         </div>

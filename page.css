@@ -1,4 +1,8 @@
 *{box-sizing:border-box}
+/* An author display rule beats the UA stylesheet's [hidden]{display:none}, so any
+   flex/grid utility silently un-hides an element marked hidden. The form's two
+   steps use .stack-16, which is display:flex — without this both rendered at once. */
+[hidden]{display:none!important}
 html{scroll-behavior:smooth}
 body{margin:0;background:var(--paper);color:var(--gray-700);font-family:'Archivo',system-ui,sans-serif;font-size:17.5px;font-weight:450;line-height:1.68;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%}
@@ -86,14 +90,18 @@ a[href="#register"]{white-space:nowrap}
 /* form */
 .formcard{border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:#fff;padding:0;overflow:hidden}
 .hero-r .formcard{box-shadow:8px 8px 0 var(--ink)}
-.form-head{background:var(--ink);padding:20px 26px;display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
-.form-title{font-family:'Archivo Black',system-ui,sans-serif;font-size:20px;text-transform:uppercase;letter-spacing:-.015em;color:#fff;margin:0;line-height:1}
-.form-when{margin:0;font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:700;color:var(--crimson-200);white-space:nowrap}
-.form-body{padding:26px}
-.form-foot{margin-top:26px;padding-top:22px;border-top:2px solid var(--gray-200);display:flex;flex-direction:column;gap:12px}
-.form-note{font-size:13.5px;color:var(--gray-500);line-height:1.5;margin:0;text-align:center}
+.form-head{background:var(--ink);padding:15px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
+.form-title{font-family:'Archivo Black',system-ui,sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:-.015em;color:#fff;margin:0;line-height:1}
+.form-when{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--crimson-200);white-space:nowrap}
+.form-body{padding:22px}
+/* the design system's Input stacks label over field with an 8px gap; 12px between
+   fields is enough separation once every label is uppercase and set in the display face */
+.fstack{display:flex;flex-direction:column;gap:12px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:start}
+.form-foot{margin-top:20px;padding-top:16px;border-top:2px solid var(--gray-200);display:flex;flex-direction:column;gap:10px}
+.form-note{font-size:13px;color:var(--gray-500);line-height:1.45;margin:0;text-align:center}
 /* two-step progress */
-.fsteps{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+.fsteps{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
 .fstep-bars{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .fstep-bars i{height:5px;background:var(--gray-200)}
 .fstep-bars i.on{background:var(--ckp-crimson)}
@@ -103,10 +111,12 @@ a[href="#register"]{white-space:nowrap}
 .form-err{margin:16px 0 0;padding:12px 14px;background:var(--danger-bg);border-left:4px solid var(--danger);color:var(--danger);font-size:14px;font-weight:600;line-height:1.45}
 /* multi-select chips — square, ink-bordered, crimson when picked */
 .chipset{border:0;margin:0;padding:0;min-width:0}
-.chipset legend{padding:0;margin-bottom:10px;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);line-height:1.4}
-.chipset legend span{display:block;margin-top:4px;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500)}
-.chipwrap{display:flex;flex-wrap:wrap;gap:6px}
-.chip{font:inherit;font-size:13px;line-height:1.3;font-weight:500;text-align:left;min-height:44px;padding:10px 13px;cursor:pointer;background:#fff;color:var(--gray-700);border:2px solid var(--gray-300);transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
+.chip-toggle{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer;background:var(--gray-100);border:2px dashed var(--gray-300);font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);text-align:left}
+.chip-toggle:hover{border-color:var(--ink)}
+.chip-toggle>span{font-size:17px;line-height:1;color:var(--ckp-crimson);width:12px;flex:none}
+.chip-toggle>em{margin-left:auto;font-style:normal;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500);text-transform:none}
+.chipwrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font:inherit;font-size:12.5px;line-height:1.3;font-weight:500;text-align:left;min-height:44px;padding:10px 11px;cursor:pointer;background:#fff;color:var(--gray-700);border:2px solid var(--gray-300);transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
 .chip:hover{border-color:var(--ink);color:var(--ink)}
 .chip.on{background:var(--ckp-crimson);border-color:var(--ckp-crimson);color:#fff}
 .embed-slot{border:2px dashed var(--gray-300);padding:20px;text-align:center;font-size:13px;color:var(--gray-500)}
