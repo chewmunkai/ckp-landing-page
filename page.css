@@ -1,4 +1,22 @@
 *{box-sizing:border-box}
+
+/* Display face: Poppins SemiBold, replacing Archivo Black.
+   Archivo Black was only ever a substitution (see _ds tokens/fonts.css) — CKP
+   supplied no binaries — so this is a swap, not a break with the brand.
+   Everything display-typed already routes through --font-display: h1-h4 in the
+   _ds base tokens, 32 inline uses in the _ds bundle, and 38 rules below. That
+   makes this block the single switch; reverting is this block plus the <link>
+   in the HTML head.
+   Only Poppins 600 is loaded, so a rule asking for 400 still gets SemiBold, and
+   font-synthesis-weight:none stops the browser faux-bolding a 700 back up.
+   Poppins is wider and rounder than Archivo Black, so the tracking opens up
+   from -.035em (tuned for a heavy grotesque) to -.02em. */
+:root{
+  --font-display:'Poppins',system-ui,sans-serif;
+  --weight-display:600;
+  --tracking-display:-.02em;
+}
+*{font-synthesis-weight:none}
 /* An author display rule beats the UA stylesheet's [hidden]{display:none}, so any
    flex/grid utility silently un-hides an element marked hidden. The form's two
    steps use .stack-16, which is display:flex — without this both rendered at once. */
@@ -15,17 +33,20 @@ a:hover{color:var(--ckp-crimson);border-color:var(--crimson-200)}
 .sec--sm{padding:72px 0}
 .rule-t{border-top:3px solid var(--ink)}
 .rule-b{border-bottom:3px solid var(--ink)}
-.disp{font-family:'Archivo Black',system-ui,sans-serif;font-weight:400;text-transform:uppercase;line-height:.92;letter-spacing:-.035em;color:var(--ink);margin:0;text-wrap:balance}
-.h1{font-size:clamp(40px,4.6vw,68px);line-height:.94}
-.h2{font-size:clamp(28px,2.7vw,40px);line-height:.98;letter-spacing:-.03em}
-.h3{font-size:22px;line-height:1.06;letter-spacing:-.02em}
+/* Poppins SemiBold sits lighter and rounder than Archivo Black, so the leading
+   opens from .92-.98 to ~1 — a heavy grotesque can carry near-solid leading,
+   a geometric semibold reads cramped at it. Sizes are unchanged. */
+.disp{font-family:var(--font-display);font-weight:var(--weight-display);text-transform:uppercase;line-height:1;letter-spacing:var(--tracking-display);color:var(--ink);margin:0;text-wrap:balance}
+.h1{font-size:clamp(40px,4.6vw,68px);line-height:1}
+.h2{font-size:clamp(28px,2.7vw,40px);line-height:1.04;letter-spacing:-.018em}
+.h3{font-size:22px;line-height:1.18;letter-spacing:-.012em}
 .tint{color:var(--ckp-crimson)}
 .tint-navy{color:var(--ckp-navy)}
 .on-dark{color:#fff}
-.eyebrow{font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.16em;line-height:1.4;margin:0}
+.eyebrow{font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:.16em;line-height:1.4;margin:0}
 .eyebrow-block{display:inline-block;background:var(--ink);color:#fff;padding:10px 14px;white-space:nowrap}
 .chips{display:flex;flex-wrap:wrap;gap:3px}
-.chips span{background:var(--ink);color:#fff;padding:10px 14px;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;text-transform:uppercase;letter-spacing:.16em;line-height:1.3}
+.chips span{background:var(--ink);color:#fff;padding:10px 14px;font-family:var(--font-display);font-size:12px;text-transform:uppercase;letter-spacing:.16em;line-height:1.3}
 .eyebrow-out{display:inline-block;border:2px solid var(--ink);color:var(--ink);padding:7px 12px;white-space:nowrap}
 .lede{font-size:22px;line-height:1.46;letter-spacing:-.012em;color:var(--ink);font-weight:500;margin:0}
 .body{font-size:17.5px;line-height:1.72;color:var(--gray-700);font-weight:450;margin:0}
@@ -42,6 +63,11 @@ a:hover{color:var(--ckp-crimson);border-color:var(--crimson-200)}
 .stack-16{display:flex;flex-direction:column;gap:16px}
 .stack-24{display:flex;flex-direction:column;gap:24px}
 .stack-32{display:flex;flex-direction:column;gap:32px}
+/* A section label belongs to the headline under it. At a flat 32px it sat
+   equidistant from the headline and the body copy and read as a third floating
+   element, so pull it in to ~18px and let the full 32px do the headline-to-body
+   work. Only the Badge lands here as a bare first-child span. */
+.stack-32>span:first-child{margin-bottom:-14px}
 .row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 /* header */
 .hdr{position:sticky;top:0;z-index:60;background:#fff;border-bottom:3px solid var(--ink)}
@@ -49,7 +75,7 @@ a[href="#register"]{white-space:nowrap}
 .hdr-in{display:flex;align-items:center;justify-content:space-between;gap:24px;height:78px}
 .hdr-brand{display:flex;align-items:center;gap:12px}
 .hdr-brand img{width:38px;height:38px}
-.hdr-name{font-family:'Archivo Black',system-ui,sans-serif;font-size:15px;letter-spacing:-.01em;color:var(--ink);text-transform:uppercase;line-height:1}
+.hdr-name{font-family:var(--font-display);font-size:15px;letter-spacing:-.01em;color:var(--ink);text-transform:uppercase;line-height:1}
 .hdr-sub{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--gray-500);font-weight:600;margin-top:4px}
 .hdr-meta{display:flex;align-items:center;gap:20px}
 /* the sm Button is 38px tall; on a touch screen that is under the 44px minimum */
@@ -78,11 +104,11 @@ a[href="#register"]{white-space:nowrap}
 /* countdown */
 .cd{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:var(--ink);border:3px solid var(--ink)}
 .cd-cell{background:#fff;padding:12px 6px;text-align:center}
-.cd-n{font-family:'Archivo Black',system-ui,sans-serif;font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.cd-n{font-family:var(--font-display);font-size:30px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
 .cd-l{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-500);font-weight:700;margin-top:7px}
 .seats{border:2px solid var(--ink);background:#fff;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .seats-top{display:flex;justify-content:space-between;align-items:baseline}
-.seats-n{font-family:'Archivo Black',system-ui,sans-serif;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.seats-n{font-family:var(--font-display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
 .seats-n b{color:var(--ckp-crimson);font-weight:400}
 .seat-meter{display:grid;grid-template-columns:repeat(40,1fr);gap:2px}
 .seat-meter i{height:10px;background:var(--gray-200)}
@@ -91,7 +117,7 @@ a[href="#register"]{white-space:nowrap}
 .formcard{border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:#fff;padding:0;overflow:hidden}
 .hero-r .formcard{box-shadow:8px 8px 0 var(--ink)}
 .form-head{background:var(--ink);padding:15px 22px;display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
-.form-title{font-family:'Archivo Black',system-ui,sans-serif;font-size:18px;text-transform:uppercase;letter-spacing:-.015em;color:#fff;margin:0;line-height:1}
+.form-title{font-family:var(--font-display);font-size:18px;text-transform:uppercase;letter-spacing:-.015em;color:#fff;margin:0;line-height:1}
 .form-when{margin:0;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--crimson-200);white-space:nowrap}
 .form-body{padding:22px}
 /* the design system's Input stacks label over field with an 8px gap; 12px between
@@ -105,13 +131,13 @@ a[href="#register"]{white-space:nowrap}
 .fstep-bars{display:grid;grid-template-columns:1fr 1fr;gap:4px}
 .fstep-bars i{height:5px;background:var(--gray-200)}
 .fstep-bars i.on{background:var(--ckp-crimson)}
-.fstep-label{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-500)}
+.fstep-label{font-family:var(--font-display);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-500)}
 .fback{background:none;border:0;padding:4px 0;cursor:pointer;font-family:'Archivo',sans-serif;font-size:13.5px;font-weight:600;color:var(--gray-500);text-decoration:underline;text-underline-offset:3px}
 .fback:hover{color:var(--ckp-crimson)}
 .form-err{margin:16px 0 0;padding:12px 14px;background:var(--danger-bg);border-left:4px solid var(--danger);color:var(--danger);font-size:14px;font-weight:600;line-height:1.45}
 /* multi-select chips — square, ink-bordered, crimson when picked */
 .chipset{border:0;margin:0;padding:0;min-width:0}
-.chipset legend{padding:0;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);line-height:1.4}
+.chipset legend{padding:0;font-family:var(--font-display);font-size:12px;letter-spacing:var(--tracking-label);text-transform:uppercase;color:var(--ink);line-height:1.4}
 .chipset legend span{display:block;margin-top:3px;font-family:'Archivo',sans-serif;font-size:11px;letter-spacing:.06em;color:var(--gray-500);text-transform:none}
 .chipwrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .chip{font:inherit;font-size:12.5px;line-height:1.3;font-weight:500;text-align:left;min-height:44px;padding:10px 11px;cursor:pointer;background:#fff;color:var(--gray-700);border:2px solid var(--gray-300);transition:background var(--duration-fast) var(--ease-out),border-color var(--duration-fast) var(--ease-out),color var(--duration-fast) var(--ease-out)}
@@ -129,38 +155,38 @@ a[href="#register"]{white-space:nowrap}
 .trust-list li{list-style:none;padding:24px 18px;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .trust-list li:last-child{border-right:0;padding-right:0}
 .trust-list li:before{content:'';width:18px;height:3px;background:var(--ckp-crimson);flex:none}
-.trust-list li span{font-family:'Archivo Black',system-ui,sans-serif;font-size:12.5px;line-height:1.42;letter-spacing:.03em;text-transform:uppercase;color:var(--ink)}
+.trust-list li span{font-family:var(--font-display);font-size:12.5px;line-height:1.42;letter-spacing:.03em;text-transform:uppercase;color:var(--ink)}
 .trust-list li em{font-style:normal;color:var(--ckp-crimson)}
 .connect{display:grid;grid-template-columns:minmax(200px,290px) 1fr;align-items:center}
 .cn-src{display:flex;flex-direction:column}
-.cn-src>span{position:relative;padding:22px 34px 22px 0;border-bottom:1px solid rgba(255,255,255,.2);font-family:'Archivo Black',system-ui,sans-serif;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#fff}
+.cn-src>span{position:relative;padding:22px 34px 22px 0;border-bottom:1px solid rgba(255,255,255,.2);font-family:var(--font-display);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#fff}
 .cn-src>span:last-child{border-bottom:0}
 .cn-src>span:after{content:'';position:absolute;right:0;top:50%;width:34px;height:2px;background:var(--ckp-crimson)}
 .cn-msg{border-left:2px solid var(--ckp-crimson);padding:10px 0 10px 48px}
 .cn-msg p{margin:0;max-width:46ch;font-size:19px;line-height:1.62;color:rgba(255,255,255,.82)}
-.cn-msg b{display:block;margin-top:20px;color:#fff;font-family:'Archivo Black',system-ui,sans-serif;font-weight:400;font-size:23px;line-height:1.24;letter-spacing:-.025em;max-width:22ch}
+.cn-msg b{display:block;margin-top:20px;color:#fff;font-family:var(--font-display);font-weight:400;font-size:23px;line-height:1.24;letter-spacing:-.025em;max-width:22ch}
 /* quote */
 .quote{background:var(--ink);color:#fff;padding:56px 64px;position:relative}
-.quote p{font-family:'Archivo Black',system-ui,sans-serif;font-size:clamp(24px,2.5vw,36px);line-height:1.12;letter-spacing:-.025em;margin:0;color:#fff;max-width:20ch}
+.quote p{font-family:var(--font-display);font-size:clamp(24px,2.5vw,36px);line-height:1.12;letter-spacing:-.025em;margin:0;color:#fff;max-width:20ch}
 .quote-tag{position:absolute;top:0;right:0;background:var(--ckp-crimson);color:#fff;padding:10px 16px}
 /* question band */
 .qband{background:var(--ink);padding:22px 0}
 .qrow{display:grid;grid-template-columns:88px 1fr;gap:24px;align-items:baseline;padding:32px 0;border-bottom:1px solid rgba(255,255,255,.16)}
 .qrow:last-child{border-bottom:0}
-.qrow .n{font-family:'Archivo Black',system-ui,sans-serif;font-size:13px;letter-spacing:.16em;color:var(--ckp-crimson)}
-.qrow .q{font-family:'Archivo Black',system-ui,sans-serif;font-size:clamp(26px,3.1vw,46px);line-height:1;letter-spacing:-.035em;color:#fff;text-transform:uppercase;margin:0}
+.qrow .n{font-family:var(--font-display);font-size:13px;letter-spacing:.16em;color:var(--ckp-crimson)}
+.qrow .q{font-family:var(--font-display);font-size:clamp(26px,3.1vw,46px);line-height:1;letter-spacing:-.035em;color:#fff;text-transform:uppercase;margin:0}
 /* coverage — three covered zones with two visible, hatched gaps between them */
 .cover{border:3px solid var(--ink);background:#fff}
 .cover-row{display:grid;grid-template-columns:1fr 58px 1fr 58px 1fr}
 .cov{padding:32px 28px 26px;display:flex;flex-direction:column;gap:12px}
-.cov-who{font-family:'Archivo Black',system-ui,sans-serif;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);line-height:1.3}
+.cov-who{font-family:var(--font-display);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);line-height:1.3}
 .cov p{margin:0;font-size:16.5px;line-height:1.5;color:var(--gray-700);flex:1}
 .cov-tag{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--gray-500);display:flex;align-items:center;gap:8px}
 .cov-tag:before{content:'';width:14px;height:3px;background:var(--gray-300)}
 .cov-gap{background:repeating-linear-gradient(135deg,var(--crimson-50) 0 7px,#fff 7px 14px);border-left:2px dashed var(--ckp-crimson);border-right:2px dashed var(--ckp-crimson);display:grid;place-items:center}
-.cov-gap span{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ckp-crimson);writing-mode:vertical-rl;transform:rotate(180deg)}
+.cov-gap span{font-family:var(--font-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ckp-crimson);writing-mode:vertical-rl;transform:rotate(180deg)}
 .cover-foot{background:var(--ckp-crimson);border-top:3px solid var(--ink);padding:28px 32px;display:grid;grid-template-columns:auto 1fr;gap:40px;align-items:center}
-.cf-label{font-family:'Archivo Black',system-ui,sans-serif;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#fff;width:15ch;line-height:1.4}
+.cf-label{font-family:var(--font-display);font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#fff;width:15ch;line-height:1.4}
 .cover-foot ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
 .cover-foot li{color:#fff;font-size:16px;line-height:1.45;font-weight:500;padding-left:16px;border-left:2px solid rgba(255,255,255,.55)}
 /* compliance clock — the deadlines that start on incorporation day */
@@ -168,35 +194,35 @@ a[href="#register"]{white-space:nowrap}
 .clock-head p{margin:0;font-size:16.5px;color:var(--gray-700);line-height:1.5}
 .clock{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;background:var(--ink);border:3px solid var(--ink)}
 .clock>div{background:#fff;padding:24px 22px;display:flex;flex-direction:column;gap:12px}
-.clock .when{font-family:'Archivo Black',system-ui,sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ckp-crimson)}
+.clock .when{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--ckp-crimson)}
 .clock p{margin:0;font-size:15.5px;line-height:1.5;color:var(--gray-700)}
 /* payoff — what the reader personally gets out of the hour */
 .payoff{border-left:5px solid var(--ckp-crimson);padding:6px 0 6px 26px;display:flex;flex-direction:column;gap:8px}
-.payoff b{font-family:'Archivo Black',system-ui,sans-serif;font-weight:400;font-size:clamp(19px,1.9vw,25px);line-height:1.28;letter-spacing:-.02em;color:var(--ink);max-width:26ch}
+.payoff b{font-family:var(--font-display);font-weight:400;font-size:clamp(19px,1.9vw,25px);line-height:1.28;letter-spacing:-.02em;color:var(--ink);max-width:26ch}
 .payoff span{font-size:16px;color:var(--gray-500)}
 /* merge — three sources converging into one connected view */
 .merge{display:flex;flex-direction:column}
 .merge-top{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 .msrc{border:2px solid rgba(255,255,255,.28);border-top:3px solid var(--ckp-crimson);padding:22px 22px 20px;display:flex;flex-direction:column;gap:10px;background:rgba(255,255,255,.03)}
-.msrc-n{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.2em;color:var(--ckp-crimson)}
-.msrc-t{font-family:'Archivo Black',system-ui,sans-serif;font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#fff;line-height:1.3}
+.msrc-n{font-family:var(--font-display);font-size:11px;letter-spacing:.2em;color:var(--ckp-crimson)}
+.msrc-t{font-family:var(--font-display);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#fff;line-height:1.3}
 .msrc-d{font-size:14.5px;line-height:1.5;color:rgba(255,255,255,.62)}
 .merge-svg{display:block;width:100%;height:70px;fill:none;stroke:var(--ckp-crimson);stroke-width:2}
 .merge-into{position:relative;margin:0 auto;width:min(760px,100%);background:var(--ckp-crimson);border:3px solid #fff;box-shadow:10px 10px 0 rgba(255,255,255,.14);padding:38px 44px;display:flex;flex-direction:column;gap:14px;text-align:center;align-items:center}
-.mi-eyebrow{font-family:'Archivo Black',system-ui,sans-serif;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75)}
-.mi-label{margin:0;font-family:'Archivo Black',system-ui,sans-serif;font-size:clamp(28px,3.4vw,46px);text-transform:uppercase;letter-spacing:-.035em;color:#fff;line-height:.96}
+.mi-eyebrow{font-family:var(--font-display);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.75)}
+.mi-label{margin:0;font-family:var(--font-display);font-size:clamp(28px,3.4vw,46px);text-transform:uppercase;letter-spacing:-.035em;color:#fff;line-height:.96}
 .mi-body{margin:0;color:rgba(255,255,255,.9);font-size:17px;line-height:1.55;max-width:46ch}
-.mi-sig{margin:6px 0 0;padding-top:18px;border-top:2px solid rgba(255,255,255,.35);width:100%;font-family:'Archivo Black',system-ui,sans-serif;font-size:clamp(16px,1.5vw,20px);line-height:1.3;letter-spacing:-.02em;color:#fff}
+.mi-sig{margin:6px 0 0;padding-top:18px;border-top:2px solid rgba(255,255,255,.35);width:100%;font-family:var(--font-display);font-size:clamp(16px,1.5vw,20px);line-height:1.3;letter-spacing:-.02em;color:#fff}
 /* handovers */
 .hand{display:grid;grid-template-columns:repeat(3,1fr);border-top:3px solid var(--ink)}
 .hand>div{padding:30px 40px 0 0;display:flex;flex-direction:column;gap:18px;border-right:1px solid var(--gray-200)}
 .hand>div+div{padding-left:40px}
 .hand>div:last-child{border-right:0;padding-right:0}
-.hand .role{font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ckp-crimson)}
+.hand .role{font-family:var(--font-display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--ckp-crimson)}
 .hand p{margin:0;font-size:18px;line-height:1.5;color:var(--ink);font-weight:500;max-width:30ch}
 /* ledger */
 .ledger{width:100%;border-collapse:collapse;border:3px solid var(--ink)}
-.ledger th{background:var(--ink);color:#fff;font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-align:left;padding:16px 24px}
+.ledger th{background:var(--ink);color:#fff;font-family:var(--font-display);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-align:left;padding:16px 24px}
 .ledger td{border-top:2px solid var(--ink);padding:22px 24px;font-size:17px;line-height:1.5;vertical-align:top;color:var(--gray-700)}
 /* the consequence column is the point of this table — let it carry the weight */
 .ledger td:first-child{color:var(--gray-700);font-weight:450;width:42%;border-right:2px solid var(--ink)}
@@ -205,8 +231,8 @@ a[href="#register"]{white-space:nowrap}
 /* decisions */
 .dgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:var(--ink);border:3px solid var(--ink)}
 .dcell{background:#fff;padding:36px 32px;display:flex;flex-direction:column;gap:14px;min-height:270px}
-.dcell .num{font-family:'Archivo Black',system-ui,sans-serif;font-size:13px;letter-spacing:.1em;color:var(--ckp-crimson)}
-.dcell h3{margin:0;font-family:'Archivo Black',system-ui,sans-serif;font-size:19px;line-height:1.2;letter-spacing:-.02em;color:var(--ink);text-transform:none;max-width:22ch}
+.dcell .num{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;color:var(--ckp-crimson)}
+.dcell h3{margin:0;font-family:var(--font-display);font-size:19px;line-height:1.2;letter-spacing:-.02em;color:var(--ink);text-transform:none;max-width:22ch}
 .dcell p{margin:0;font-size:16px;line-height:1.62;font-weight:450}
 .dcell--em{background:var(--ckp-crimson)}
 .dcell--em .num{color:var(--ink)}
@@ -220,7 +246,7 @@ a[href="#register"]{white-space:nowrap}
    4/5 crops the empty lower third of the frame so the photo finishes level with
    the credentials beside it; object-position keeps the face anchored. */
 .jphoto img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 12%}
-.jname{font-family:'Archivo Black',system-ui,sans-serif;font-size:30px;letter-spacing:-.03em;text-transform:uppercase;color:var(--ink);margin:0;line-height:1}
+.jname{font-family:var(--font-display);font-size:30px;letter-spacing:-.03em;text-transform:uppercase;color:var(--ink);margin:0;line-height:1}
 .jrole{font-size:14px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ckp-crimson);margin:8px 0 0}
 .creds{list-style:none;margin:0;padding:0;border-top:1px solid var(--gray-200)}
 .creds li{border-bottom:1px solid var(--gray-200);padding:15px 0 15px 30px;position:relative;font-size:16.5px;line-height:1.5;color:var(--ink)}
@@ -241,13 +267,13 @@ a[href="#register"]{white-space:nowrap}
 .vplay:after{content:'';border-left:13px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent;margin-left:3px}
 .vcta{margin-top:36px;padding-top:28px;border-top:3px solid var(--ink);display:flex;flex-direction:column;align-items:flex-start;gap:18px}
 .vcta-stat{margin:0;font-size:17px;line-height:1.5;color:var(--gray-700);max-width:34ch}
-.vcta-stat b{font-family:'Archivo Black',system-ui,sans-serif;font-weight:400;font-size:24px;color:var(--ckp-crimson);letter-spacing:-.02em}
+.vcta-stat b{font-family:var(--font-display);font-weight:400;font-size:24px;color:var(--ckp-crimson);letter-spacing:-.02em}
 .vplay--sm{left:50%;bottom:50%;transform:translate(-50%,50%);width:24px;height:24px;border-width:2px}
 .vplay--sm:after{border-left:7px solid #fff;border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
 /* faq */
 .faq{border-top:3px solid var(--ink)}
 .faq-item{border-bottom:3px solid var(--ink)}
-.faq-q{width:100%;background:none;border:0;text-align:left;display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:28px 0;cursor:pointer;font-family:'Archivo Black',system-ui,sans-serif;font-size:20px;line-height:1.24;letter-spacing:-.02em;color:var(--ink);transition:color 120ms cubic-bezier(.22,.9,.28,1)}
+.faq-q{width:100%;background:none;border:0;text-align:left;display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:28px 0;cursor:pointer;font-family:var(--font-display);font-size:20px;line-height:1.24;letter-spacing:-.02em;color:var(--ink);transition:color 120ms cubic-bezier(.22,.9,.28,1)}
 .faq-q:hover{color:var(--ckp-crimson)}
 .faq-q i{font-style:normal;font-size:26px;line-height:1;color:var(--ckp-crimson);flex:none;transition:transform 180ms cubic-bezier(.22,.9,.28,1)}
 .faq-item.open .faq-q i{transform:rotate(45deg)}
@@ -256,22 +282,41 @@ a[href="#register"]{white-space:nowrap}
 /* final */
 .final{background:var(--ckp-crimson);border-top:3px solid var(--ink);border-bottom:3px solid var(--ink)}
 .final-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:72px;align-items:start}
-/* left column: eyebrow, two-tone display headline, supporting line, rule-separated
-   meta rows. Ink carries the emphasis half of the headline — on crimson it reads
-   harder than white and keeps the section to the two brand colours. */
-.final-left{display:flex;flex-direction:column;align-items:flex-start;gap:24px}
-.final-eyebrow{font-family:'Archivo Black',system-ui,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);line-height:1.3}
-.final-h2{margin:0;display:flex;flex-direction:column;gap:4px;text-transform:uppercase}
-.fh-a{color:#fff;font-size:clamp(22px,2.3vw,32px);line-height:1.04;letter-spacing:-.03em;max-width:20ch}
-.fh-b{color:var(--ink);font-size:clamp(34px,4.2vw,60px);line-height:.94;letter-spacing:-.04em;max-width:14ch}
-.final-lede{margin:0;max-width:44ch;font-size:clamp(16.5px,1.5vw,18.5px);line-height:1.55;color:rgba(255,255,255,.9)}
-.final-meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 0}
-.final-meta span{font-size:13.5px;font-weight:600;color:#fff;padding:0 16px;border-left:1px solid rgba(255,255,255,.4);line-height:1.25;white-space:nowrap}
-.final-meta span:first-child{padding-left:0;border-left:0}
-.fm-live{display:flex;align-items:center;gap:9px}
-.fm-live i{width:8px;height:8px;background:var(--ink);flex:none}
-.final-note{margin:0;font-family:'Archivo Black',system-ui,sans-serif;font-size:clamp(17px,1.7vw,22px);line-height:1.3;letter-spacing:-.025em;color:#fff;max-width:24ch}
-.final-small{margin:0;max-width:46ch;font-size:15px;line-height:1.6;color:rgba(255,255,255,.82)}
+/* left column: eyebrow, two-tone display headline, fact box, seat counts, payoff.
+   Ink carries the emphasis half of the headline — on crimson it reads harder than
+   white and keeps the section to the two brand colours.
+   Spacing is set per-gap rather than one flat gap, so the block reads as four
+   groups (label / headline / facts / closing) instead of five evenly spaced
+   strangers. */
+.final-left{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.final-eyebrow{font-family:var(--font-display);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink);line-height:1.3}
+/* The two halves were 32px against 60px — a 1.9x jump that read as two unrelated
+   headlines stacked. Same type ramp as the rest of the page now: a 1.45 step, one
+   tracking value, one leading value, and measures within 3ch of each other so the
+   two blocks rag alike and land as a single shape. */
+.final-h2{margin:20px 0 0;display:flex;flex-direction:column;gap:8px;text-transform:uppercase}
+.fh-a{color:#fff;font-size:clamp(24px,2.6vw,36px);line-height:1.02;letter-spacing:var(--tracking-display);max-width:20ch}
+.fh-b{color:var(--ink);font-size:clamp(34px,3.8vw,52px);line-height:1.02;letter-spacing:var(--tracking-display);max-width:17ch}
+/* The four facts were a 13.5px inline row that disappeared against the crimson.
+   Boxed on paper with the ink rules and hard shadow the rest of the page uses:
+   2x2 so the time string keeps its own line instead of wrapping in a 4-up. */
+/* Uneven columns on purpose: column 1 carries the time string, which is 25
+   characters against the 16 of the date, so an even 2-up wraps it and leaves
+   "Free" and "Online" swimming in space. */
+.final-facts{margin-top:32px;width:100%;max-width:560px;display:grid;grid-template-columns:1.35fr 1fr;gap:3px;background:var(--ink);border:3px solid var(--ink);box-shadow:8px 8px 0 var(--ink)}
+.ff-cell{background:#fff;padding:15px 18px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.ff-l{font-family:var(--font-display);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--gray-500);line-height:1}
+.ff-v{font-family:var(--font-display);font-size:clamp(15px,1.35vw,17.5px);letter-spacing:-.01em;color:var(--ink);line-height:1.2}
+/* Was 13.5px body weight — the scarcity numbers are the reason this block exists,
+   so they now run at display size with the numerals in ink. */
+.final-seats{margin-top:22px;display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 30px}
+/* Not flex on the span: a flex container makes each text node its own item, so
+   "23" and "of 40 seats left" would sit a gap apart mid-sentence. */
+.final-seats span{font-family:var(--font-display);font-size:clamp(16px,1.5vw,19px);letter-spacing:-.01em;color:#fff;line-height:1.2;white-space:nowrap}
+.final-seats b{font-weight:inherit;color:var(--ink)}
+.fs-live i{display:inline-block;width:10px;height:10px;background:var(--ink);margin-right:10px}
+.final-note{margin:34px 0 0;font-family:var(--font-display);font-size:clamp(17px,1.7vw,22px);line-height:1.36;letter-spacing:var(--tracking-display);color:#fff;max-width:26ch}
+.final-small{margin:16px 0 0;max-width:46ch;font-size:15px;line-height:1.6;color:rgba(255,255,255,.82)}
 .final-line{display:flex;flex-wrap:wrap;gap:0 18px;align-items:center;border-top:2px solid rgba(255,255,255,.4);border-bottom:2px solid rgba(255,255,255,.4);padding:16px 0;margin-top:36px}
 .final-line span{font-size:14px;font-weight:600;color:#fff;display:flex;align-items:center;gap:18px;white-space:nowrap}
 .final-line span:not(:last-child):after{content:'';width:5px;height:5px;background:var(--ink)}
@@ -285,7 +330,7 @@ a[href="#register"]{white-space:nowrap}
 .ftr-badge img{width:100%;height:auto}
 .ftr a{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
 .ftr a:hover{color:var(--crimson-200);border-bottom-color:var(--crimson-200)}
-.ftr-name{font-family:'Archivo Black',system-ui,sans-serif;color:#fff;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 0 12px}
+.ftr-name{font-family:var(--font-display);color:#fff;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 0 12px}
 .ftr-bottom{margin-top:48px;padding-top:24px;border-top:1px solid rgba(255,255,255,.18);display:flex;justify-content:space-between;gap:24px;font-size:13px;flex-wrap:wrap}
 /* sticky cta */
 .sticky{position:fixed;left:0;right:0;bottom:0;z-index:70;background:var(--ink);border-top:3px solid var(--ckp-crimson);transform:translateY(102%);transition:transform 180ms cubic-bezier(.22,.9,.28,1)}
@@ -293,7 +338,7 @@ a[href="#register"]{white-space:nowrap}
 /* padding-block, not the shorthand — the shorthand would reset .wrap's gutters,
    which share this element, and push the bar's content to the screen edge */
 .sticky-in{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-block:14px}
-.sticky-txt{font-family:'Archivo Black',system-ui,sans-serif;color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.2}
+.sticky-txt{font-family:var(--font-display);color:#fff;font-size:15px;text-transform:uppercase;letter-spacing:-.01em;line-height:1.2}
 .sticky-sub{font-size:13px;color:rgba(255,255,255,.72);font-weight:600;letter-spacing:.04em;margin-top:4px;text-transform:uppercase;font-family:'Archivo',sans-serif}
 /* reveal */
 .rv{opacity:0;transform:translateY(12px);transition:opacity 320ms cubic-bezier(.22,.9,.28,1),transform 320ms cubic-bezier(.22,.9,.28,1)}
@@ -301,12 +346,12 @@ a[href="#register"]{white-space:nowrap}
 /* lightbox */
 .lb{position:fixed;inset:0;z-index:90;background:rgba(14,18,51,.72);display:grid;place-items:center;padding:40px}
 .lb-in{height:min(82vh,760px);aspect-ratio:9/16;max-width:92vw;border:3px solid var(--ink);background:#000;position:relative}
-.lb-x{position:absolute;top:-3px;right:-3px;transform:translateY(-100%);background:var(--ckp-crimson);color:#fff;border:3px solid var(--ink);font-size:20px;line-height:1;width:44px;height:44px;cursor:pointer;font-family:'Archivo Black',sans-serif}
+.lb-x{position:absolute;top:-3px;right:-3px;transform:translateY(-100%);background:var(--ckp-crimson);color:#fff;border:3px solid var(--ink);font-size:20px;line-height:1;width:44px;height:44px;cursor:pointer;font-family:var(--font-display)}
 /* thank you */
 .ty{min-height:100vh;background:var(--ckp-crimson);display:grid;place-items:center;padding:80px 24px}
 .ty-card{background:#fff;border:3px solid var(--ink);box-shadow:12px 12px 0 var(--ink);max-width:760px;width:100%;padding:56px}
 .ty-step{display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
-.ty-step b{font-family:'Archivo Black',sans-serif;font-size:13px;letter-spacing:.1em;color:#fff;background:var(--ink);padding:6px 10px;font-weight:400}
+.ty-step b{font-family:var(--font-display);font-size:13px;letter-spacing:.1em;color:#fff;background:var(--ink);padding:6px 10px;font-weight:400}
 @media (max-width:1180px){
 .trust-list{grid-template-columns:repeat(3,1fr)}
 .trust-list li{padding:18px 13px}

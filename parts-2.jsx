@@ -137,16 +137,15 @@ function FinalCTA({ onDone }) {
             <span className="fh-a">Your company may already be fine.</span>
             <span className="fh-b">You deserve to know, not assume.</span>
           </h2>
-          <p className="final-lede">Swap “I think everything should be okay” for knowing. Your structure, your deadlines, your payroll, your books.</p>
-          <div className="final-meta">
-            <span>Free</span>
-            <span>8 September 2026</span>
-            <span>{CFG.time}</span>
-            <span>Online</span>
+          <div className="final-facts">
+            <div className="ff-cell"><span className="ff-l">Price</span><span className="ff-v">Free</span></div>
+            <div className="ff-cell"><span className="ff-l">Date</span><span className="ff-v">8 September 2026</span></div>
+            <div className="ff-cell"><span className="ff-l">Time</span><span className="ff-v">{CFG.time}</span></div>
+            <div className="ff-cell"><span className="ff-l">Where</span><span className="ff-v">Online</span></div>
           </div>
-          <div className="final-meta">
-            <span className="fm-live"><i />{left} of {CFG.seatsTotal} seats left</span>
-            <span>20 private review slots</span>
+          <div className="final-seats">
+            <span className="fs-live"><i /><b>{left}</b> of {CFG.seatsTotal} seats left</span>
+            <span><b>20</b> private review slots</span>
           </div>
           <p className="final-note">60 minutes now, or an unknown bill later. That is the whole trade.</p>
           <p className="final-small">Built for owners and directors. Bring whoever handles your books, payroll or compliance if you want everyone aligned.</p>
