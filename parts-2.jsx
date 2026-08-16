@@ -167,7 +167,7 @@ function Footer() {
           </div>
           <div>
             <p className="ftr-name">Chia, Ka &amp; Partners PLT (LLP0005573-LCA)</p>
-            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+603-9212 7856 · <a href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a>
+            <p style={{ margin: 0, lineHeight: 1.7 }}>Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur<br />+603-9212 7856 <span className="ftr-sep">·</span> <a className="ftr-mail" href="mailto:enquiry@ckpartners.com.my">enquiry@ckpartners.com.my</a>
               {/* Only render once a real URL is set — an unresolved placeholder would
                   ship a dead link, which is worse than omitting the line. */}
               {/^https?:\/\//.test(CFG.privacyUrl) && (

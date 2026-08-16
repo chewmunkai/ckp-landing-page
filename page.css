@@ -83,6 +83,15 @@ a[href="#register"]{white-space:nowrap}
 /* hero */
 .hero{background:var(--ckp-crimson);border-bottom:3px solid var(--ink)}
 .hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:3px;background:var(--ink)}
+/* Grid and flex items default to min-width:auto, which refuses to shrink below
+   the intrinsic minimum width of their content. A <select> takes that minimum
+   from its longest <option>, and the longest here — "Not confident at all — I
+   need help understanding the requirements" — measures 507px. On a 360px phone
+   that one string propagated up through the form and the hero column and pushed
+   the whole document 23px wider than the screen, which is what was causing the
+   page to scroll sideways. */
+.hero-grid>*,.final-grid>*,.formcard{min-width:0}
+.formcard select{min-width:0;max-width:100%}
 .hero-l{background:var(--ckp-crimson);padding:64px 64px 60px 0;display:flex;flex-direction:column;justify-content:space-between}
 .hero-r{background:var(--ckp-crimson);padding:64px 0 60px 56px}
 .hero-r-in{max-width:460px}
@@ -438,5 +447,28 @@ a[href="#register"]{white-space:nowrap}
 .cov{padding:26px 22px 22px}
 .cover-foot{padding:24px 22px}
 .merge-into{padding:24px 22px}
+
+/* The date line is nowrap so it stays on one line beside the card title on a
+   desktop. On a phone it needs 313px in a 270px head, and .formcard clips its
+   overflow, so it was being cut mid-word — "(GMT+8) · ONL". Let it wrap. */
+.form-when{white-space:normal;line-height:1.45}
+.form-head{gap:4px 14px}
+
+/* The note is capped at 19ch so it can sit beside the button on a desktop. Once
+   the button goes full-width above it, that cap only forces a ragged two-line
+   break in the middle of a sentence. */
+.hero-act-note{max-width:none}
+
+/* The sticky CTA is position:fixed, so it sits on top of the document rather
+   than in it, and was permanently covering the last 34px of the footer — the
+   webinar date line could not be read at any scroll position. Clear its height
+   plus a little breathing room. */
+.ftr{padding-bottom:104px}
+
+/* The email never fits beside the phone number on a phone, so it wraps and
+   leaves the separator stranded at the end of the line. Drop the separator and
+   give the address its own line instead. */
+.ftr-sep{display:none}
+.ftr .ftr-mail{display:block} /* .ftr a already sets inline-block, so match its specificity */
 }
 @media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.rv{opacity:1;transform:none}}
