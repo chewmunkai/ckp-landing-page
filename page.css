@@ -147,10 +147,12 @@ a[href="#register"]{white-space:nowrap}
 /* trust */
 .trust{display:grid;grid-template-columns:auto 1fr;align-items:start}
 .trust-badge{display:flex;align-items:center;align-self:stretch;padding:24px 36px 24px 0;border-right:1px solid var(--gray-200)}
-/* xero-platinum-partner.png is the supplied JPEG with its baked-in white field
-   flood-filled to transparency and cropped to the mark. It sits directly on
-   whatever background it lands on — no white plate needed. */
-.trust-badge img{width:138px;height:auto}
+/* xero-platinum-partner.svg is the official "Platinum capsule" badge from the
+   Xero DAM, vector and 5.8 KB against the 35 KB of the raster it replaced.
+   The cyan variant is deliberate: this badge renders twice, here on paper and
+   again on the ink footer, and the capsule carries its own fill so one file
+   serves both. The whiteout variant would disappear against this strip. */
+.trust-badge img{width:150px;height:auto}
 .trust-list{display:grid;grid-template-columns:repeat(6,1fr);margin:0;padding:0}
 .trust-list li{list-style:none;padding:24px 18px;border-right:1px solid var(--gray-200);display:flex;flex-direction:column;gap:11px;align-items:flex-start}
 .trust-list li:last-child{border-right:0;padding-right:0}
@@ -326,7 +328,9 @@ a[href="#register"]{white-space:nowrap}
    min-height, which would break the line box */
 .ftr a{display:inline-block;padding:5px 0}
 .ftr-grid{display:grid;grid-template-columns:auto 1fr auto;gap:56px;align-items:start}
-.ftr-badge{width:172px}
+/* The capsule is 3.7:1 against the old two-circle badge's 2:1, so it needs more
+   width to keep the same optical weight in the column. */
+.ftr-badge{width:190px}
 .ftr-badge img{width:100%;height:auto}
 .ftr a{color:#fff;border-bottom-color:rgba(255,255,255,.35)}
 .ftr a:hover{color:var(--crimson-200);border-bottom-color:var(--crimson-200)}

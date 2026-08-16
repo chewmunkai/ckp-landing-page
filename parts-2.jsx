@@ -162,7 +162,7 @@ function Footer() {
       <div className="wrap">
         <div className="ftr-grid">
           <div className="stack-16">
-            <div className="ftr-badge"><img src="assets/xero-platinum-partner.png" alt="Xero Platinum Partner" width="420" height="205" /></div>
+            <div className="ftr-badge"><img src="assets/xero-platinum-partner.svg" alt="Xero Platinum Partner" width="2033" height="551" /></div>
             <p style={{ margin: 0, maxWidth: '34ch', fontSize: 14 }}>Chia, Ka &amp; Partners is a Xero Platinum Partner. Learn more at <a href="https://www.xero.com" target="_blank" rel="noopener">xero.com</a></p>
           </div>
           <div>

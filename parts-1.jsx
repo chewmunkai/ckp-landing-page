@@ -64,7 +64,7 @@ function TrustStrip() {
   return (
     <div className="rule-b">
       <div className="wrap trust">
-        <div className="trust-badge"><img src="assets/xero-platinum-partner.png" alt="Xero Platinum Partner" width="420" height="205" /></div>
+        <div className="trust-badge"><img src="assets/xero-platinum-partner.svg" alt="Xero Platinum Partner" width="2033" height="551" /></div>
         <ul className="trust-list">{items.map((t) => <li key={t}><span>{t}</span></li>)}</ul>
       </div>
     </div>
