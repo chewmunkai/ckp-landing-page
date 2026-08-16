@@ -47,6 +47,40 @@ const Q_AREAS = [
 
 const ALL_AREAS = 'All of the above';
 
+/* The field renders a +60 prefix, so people type "012-345 6789", "12 345 6789"
+   and "+60 12 345 6789" interchangeably. All three have to land in the sheet as
+   the same dialable number, because this is the only way CKP can reach anyone
+   who registers. */
+function normaliseMY(raw) {
+  let digits = String(raw || '').replace(/\D/g, '');
+  if (digits.startsWith('60')) digits = digits.slice(2);
+  digits = digits.replace(/^0+/, '');
+  return digits ? '+60' + digits : '';
+}
+
+/* Every Malaysian mobile is 01X-XXXXXXX, so after the country code and the
+   leading zero it starts with 1 and runs 9-10 digits. Deliberately loose: a
+   real number wrongly rejected costs a registration, a typo caught later costs
+   a WhatsApp message. */
+function validMY(raw) {
+  return /^1\d{8,9}$/.test(normaliseMY(raw).slice(3));
+}
+
+/* Which ad produced this registration. Without it every lead in the sheet looks
+   identical and there is no way to tell a cheap campaign from an expensive one. */
+function adSource() {
+  const p = new URLSearchParams(location.search);
+  return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid', 'gclid']
+    .map((k) => (p.get(k) ? k + '=' + p.get(k) : ''))
+    .filter(Boolean)
+    .join(' | ');
+}
+
+function newId() {
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'r-' + Date.now() + '-' + Math.random().toString(16).slice(2);
+}
+
 function RegistrationForm({ id, onDone }) {
   // Ten fields in one column reads as a wall and kills conversion, so the contact
   // details are asked first and the qualifying questions only after that commitment.
@@ -55,7 +89,12 @@ function RegistrationForm({ id, onDone }) {
   const [worry, setWorry] = React.useState('');
   const [areas, setAreas] = React.useState([]);
   const [err, setErr] = React.useState('');
+  const [sending, setSending] = React.useState(false);
   const formRef = React.useRef(null);
+  /* Stable for the life of the form, so pressing the button again after a
+     timeout retries the same registration instead of creating a second one.
+     The Apps Script drops a repeat of an id it has already written. */
+  const submissionId = React.useRef(newId());
 
   const needsOther = worry === 'Other';
 
@@ -84,21 +123,77 @@ function RegistrationForm({ id, onDone }) {
   const goToQuestions = () => {
     if (!val('name')) return setErr('Please add your name.');
     if (!val('whatsapp')) return setErr('Please add your WhatsApp number, that is where the link goes.');
+    if (!validMY(val('whatsapp'))) return setErr('That does not look like a Malaysian mobile number. It should start 01 and be the number that has WhatsApp on it.');
     if (!val('company')) return setErr('Please add your company name.');
     if (!role) return setErr('Please choose your role.');
     setErr('');
     setStep(2);
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+    if (sending) return;
     if (!val('stage')) return setErr('Please choose the stage your business is at.');
     if (!worry) return setErr('Please choose your biggest compliance worry.');
     if (needsOther && !val('worryOther')) return setErr('Please tell us what the worry is.');
     if (!val('firm')) return setErr('Please tell us whether you work with a firm already.');
     if (!val('confidence')) return setErr('Please choose how confident you feel.');
+
+    /* No endpoint means nothing can be saved. Show the failure rather than the
+       thank-you screen: telling someone they have a seat when no record of them
+       exists is the one outcome worse than asking them to try again. */
+    if (!CFG.sheetEndpoint) {
+      console.error('CFG.sheetEndpoint is empty — the registration was not saved. See apps-script/README.md.');
+      return setErr('Registration is not connected yet. Please WhatsApp +603-9212 7856 or email enquiry@ckpartners.com.my and CKP will hold your seat.');
+    }
+
     setErr('');
-    onDone && onDone();
+    setSending(true);
+
+    const payload = {
+      token: CFG.sheetToken,
+      submissionId: submissionId.current,
+      name: val('name'),
+      company: val('company'),
+      whatsapp: normaliseMY(val('whatsapp')),
+      role,
+      stage: val('stage'),
+      worry,
+      worryOther: needsOther ? val('worryOther') : '',
+      firm: val('firm'),
+      confidence: val('confidence'),
+      areas: areas.join(' | '),
+      source: adSource(),
+      referrer: document.referrer || '',
+      website: val('website') // honeypot: always empty for a human
+    };
+
+    /* Apps Script Web Apps do not answer CORS preflight. Sending JSON under a
+       text/plain content type keeps this a "simple" request so the browser never
+       sends the OPTIONS, and the redirect Apps Script answers with carries the
+       Access-Control-Allow-Origin the response needs. Switching this to
+       application/json is the classic way to break it. */
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 20000);
+
+    try {
+      const res = await fetch(CFG.sheetEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(payload),
+        redirect: 'follow',
+        signal: ctrl.signal
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || 'HTTP ' + res.status);
+      onDone && onDone(); // only now is the seat actually recorded
+    } catch (err2) {
+      console.error('Registration failed:', err2);
+      setSending(false);
+      setErr('That did not save — please check your connection and press the button again. If it keeps failing, WhatsApp +603-9212 7856 and CKP will hold your seat.');
+    } finally {
+      clearTimeout(timer);
+    }
   };
 
   return (
@@ -164,6 +259,12 @@ function RegistrationForm({ id, onDone }) {
           </fieldset>
         </div>
 
+        {/* Honeypot. Positioned off-screen rather than display:none, which the
+            better bots skip. No human sees or tabs into it, so anything that
+            arrives with it filled is discarded server-side. */}
+        <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+          style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+
         {err && <p className="form-err" role="alert">{err}</p>}
 
         <div className="form-foot">
@@ -171,8 +272,11 @@ function RegistrationForm({ id, onDone }) {
             <Button type="button" block size="lg" onClick={goToQuestions}>Continue</Button>
           ) : (
             <React.Fragment>
-              <Button block size="lg">Save My Free Seat</Button>
-              <button type="button" className="fback" onClick={() => { setErr(''); setStep(1); }}>
+              <Button block size="lg" disabled={sending}>
+                {sending ? 'Saving your seat…' : 'Save My Free Seat'}
+              </Button>
+              <button type="button" className="fback" disabled={sending}
+                onClick={() => { setErr(''); setStep(1); }}>
                 Back to your details
               </button>
             </React.Fragment>

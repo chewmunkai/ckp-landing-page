@@ -7,6 +7,16 @@ const CFG = {
   seatsTotal: 40,
   seatsTaken: 17,                   // PLACEHOLDER — set the real number of seats already booked
   formEmbedUrl: '',                 // paste your Zoho / HubSpot / Google Form embed URL here; the styled form below is used while this is empty
+
+  /* Where registrations go. Deploy apps-script/Code.gs from inside your Google
+     Sheet (Extensions > Apps Script), then paste the Web App /exec URL here and
+     the same token into both files. Steps: apps-script/README.md.
+     While sheetEndpoint is empty the form refuses to submit rather than showing
+     a thank-you screen it cannot back up — a visitor told they are registered
+     when nothing was saved is worse than one told to try again. */
+  sheetEndpoint: 'https://script.google.com/macros/s/AKfycbxYqc5QW1IITts7yKltVLLfF92IrJwvC4M2JOJq4ljGiOx0XzJwLcVa3RULowopWSrxUw/exec',
+  sheetToken: '01eb65b7e88f248c1c24de0b793e101d',
+
   privacyUrl: '{{PRIVACY_URL}}'     // TODO — real CKP privacy policy URL; shown as link text and href in the footer
 };
 
