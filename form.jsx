@@ -127,6 +127,10 @@ function RegistrationForm({ id, onDone }) {
     if (!val('company')) return setErr('Please add your company name.');
     if (!role) return setErr('Please choose your role.');
     setErr('');
+    /* Custom, not a standard event, so it never competes with
+       CompleteRegistration for optimisation. It exists to answer one question:
+       of the people who start the form, how many die on the second step. */
+    if (window.fbq) fbq('trackCustom', 'RegistrationStep2');
     setStep(2);
   };
 
@@ -186,6 +190,19 @@ function RegistrationForm({ id, onDone }) {
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error || 'HTTP ' + res.status);
+
+      /* Conversion fires here and nowhere else — after the row is confirmed
+         written. Firing it on button click instead would report registrations
+         Meta then optimises towards, while the sheet stays empty.
+         No name or phone is sent: Meta gets the fact of a registration, not the
+         person. eventID is the submission id, so if a Conversions API feed is
+         added later the two sides deduplicate instead of double-counting. */
+      if (window.fbq) {
+        fbq('track', 'CompleteRegistration',
+          { content_name: 'CKP webinar 8 Sep 2026', currency: 'MYR', value: 0 },
+          { eventID: submissionId.current });
+      }
+
       onDone && onDone(); // only now is the seat actually recorded
     } catch (err2) {
       console.error('Registration failed:', err2);

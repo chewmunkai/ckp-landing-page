@@ -24,6 +24,25 @@
 <meta name="twitter:title" content="Could you prove your company is compliant?">
 <meta name="twitter:description" content="A free 60-minute webinar for Malaysian SME owners. 8 September 2026, 3:00 PM – 4:00 PM (GMT+8), online.">
 <meta name="twitter:image" content="https://chewmunkai.github.io/ckp-landing-page/assets/og-card.png">
+<!-- Meta Pixel. Lives here rather than in config.jsx on purpose: everything else
+     on this page waits for React and Babel to download and compile (~3 MB), and
+     a PageView that fires after that misses everyone who bounced first, which
+     both undercounts traffic and starves the retargeting audience.
+     Replace PASTE_PIXEL_ID_HERE with the ID from Events Manager. Until you do,
+     the guard below keeps the whole thing inert — no requests, no errors. -->
+<script>
+(function () {
+  var PIXEL_ID = 'PASTE_PIXEL_ID_HERE';
+  if (!/^\d+$/.test(PIXEL_ID)) return; // not configured yet
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', PIXEL_ID);
+  fbq('track', 'PageView');
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Display face. Only the 600 weight is loaded, so every consumer of
