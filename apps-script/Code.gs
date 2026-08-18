@@ -21,13 +21,12 @@ var SHEET_NAME = 'Registrations';
  *  page source; it only filters drive-by bots. */
 var SHARED_TOKEN = '01eb65b7e88f248c1c24de0b793e101d';
 
-/** The plain Zoom JOIN link — https://us02web.zoom.us/j/...
- *  NOT the /meeting/register/ link: that one forces people to register a
- *  second time on Zoom's own form. Turn OFF "Require registration" on the
- *  meeting and paste the join link Zoom shows instead.
- *  Until this holds a real link, rows are still written but no email goes
- *  out — a registration must never be lost to a mail problem. */
-var ZOOM_JOIN_URL = 'PASTE_ZOOM_JOIN_LINK_HERE';
+/** The Zoom link sent to registrants. Currently the meeting's REGISTRATION
+ *  link, by the client's choice — each person completes Zoom's short form and
+ *  Zoom emails them a personal join link. If registration is ever switched
+ *  off, paste the plain join link (https://us02web.zoom.us/j/...) here
+ *  instead: the email wording below detects which kind it is and adjusts. */
+var ZOOM_JOIN_URL = 'https://us02web.zoom.us/meeting/register/sHwbLw4vQouX39CGMWa5fA';
 var ZOOM_PASSCODE = '964407';
 
 /** How the email presents itself. The From address is the Google account
@@ -154,6 +153,13 @@ function doGet() {
   return json({ ok: true, service: 'ckp-webinar-registrations' });
 }
 
+/** True when ZOOM_JOIN_URL is a registration link rather than a join link.
+ *  Registration links hand out personal join links via Zoom's own email, so
+ *  our wording must promise that, not an instant join. */
+function isRegLink() {
+  return ZOOM_JOIN_URL.indexOf('/meeting/register') !== -1;
+}
+
 /** Thank-you email with the Zoom link and a calendar invite attached. */
 function sendConfirmation(body) {
   if (!/^https?:\/\//.test(ZOOM_JOIN_URL)) return; // Zoom link not pasted yet
@@ -171,9 +177,13 @@ function sendConfirmation(body) {
     '<b>' + escapeHtml(EVENT_TITLE) + '</b><br>' +
     escapeHtml(EVENT_DATE_HUMAN) + '<br>Online \u00b7 cameras off \u00b7 nothing to prepare</p>' +
     '<p style="margin:24px 0"><a href="' + ZOOM_JOIN_URL + '" ' +
-    'style="background:#F4064F;color:#ffffff;padding:13px 26px;text-decoration:none;font-weight:bold;display:inline-block">Join the webinar</a></p>' +
-    '<p>Zoom link: <a href="' + ZOOM_JOIN_URL + '">' + ZOOM_JOIN_URL + '</a><br>' +
-    'Passcode: <b>' + escapeHtml(ZOOM_PASSCODE) + '</b></p>' +
+    'style="background:#F4064F;color:#ffffff;padding:13px 26px;text-decoration:none;font-weight:bold;display:inline-block">' +
+    (isRegLink() ? 'Get your Zoom link' : 'Join the webinar') + '</a></p>' +
+    (isRegLink()
+      ? '<p>One click left: the button opens Zoom, which confirms your seat and emails you your personal join link for the session.</p>' +
+        '<p>Zoom page: <a href="' + ZOOM_JOIN_URL + '">' + ZOOM_JOIN_URL + '</a></p>'
+      : '<p>Zoom link: <a href="' + ZOOM_JOIN_URL + '">' + ZOOM_JOIN_URL + '</a><br>' +
+        'Passcode: <b>' + escapeHtml(ZOOM_PASSCODE) + '</b></p>') +
     '<p>The calendar invite is attached \u2014 open it and the session blocks itself into your calendar.</p>' +
     '<p><b>One thing worth doing now:</b> reply to this email with the one thing about your company you feel least certain about. ' +
     'One sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
@@ -184,7 +194,9 @@ function sendConfirmation(body) {
   var plain =
     'Hi ' + firstName + ',\n\nYou\u2019re registered.\n\n' +
     EVENT_TITLE + '\n' + EVENT_DATE_HUMAN + '\nOnline, cameras off, nothing to prepare.\n\n' +
-    'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n' +
+    (isRegLink()
+      ? 'One click left \u2014 open this Zoom page and it will email you your personal join link:\n' + ZOOM_JOIN_URL + '\n\n'
+      : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n') +
     'Reply to this email with the one thing about your company you feel least certain about \u2014 ' +
     'Jeremy reads every reply and builds the most common ones into the session.\n\n' +
     'See you on the 8th,\nChia, Ka & Partners';
@@ -215,7 +227,9 @@ function icsInvite(body) {
     'DTSTART:' + EVENT_START_UTC,
     'DTEND:' + EVENT_END_UTC,
     'SUMMARY:' + icsEscape(EVENT_TITLE),
-    'DESCRIPTION:' + icsEscape('Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE),
+    'DESCRIPTION:' + icsEscape(isRegLink()
+      ? 'Zoom (get your personal join link here): ' + ZOOM_JOIN_URL
+      : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE),
     'LOCATION:Zoom',
     'URL:' + ZOOM_JOIN_URL,
     'STATUS:CONFIRMED',
@@ -257,7 +271,9 @@ function sendReminders() {
       body:
         'Hi ' + firstName + ',\n\nQuick reminder: the webinar is tomorrow.\n\n' +
         EVENT_TITLE + '\n' + EVENT_DATE_HUMAN + '\n\n' +
-        'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n' +
+        (isRegLink()
+          ? 'Zoom (your personal join link is in Zoom\u2019s confirmation email; lost it? this page resends it):\n' + ZOOM_JOIN_URL + '\n\n'
+          : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n') +
         'Cameras stay off and there is nothing to prepare. If you have not yet, ' +
         'reply with the one question you want answered \u2014 there is still time for it to make the session.\n\n' +
         'See you tomorrow,\nChia, Ka & Partners',
