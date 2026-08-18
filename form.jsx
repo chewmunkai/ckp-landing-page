@@ -122,7 +122,9 @@ function RegistrationForm({ id, onDone }) {
 
   const goToQuestions = () => {
     if (!val('name')) return setErr('Please add your name.');
-    if (!val('whatsapp')) return setErr('Please add your WhatsApp number, that is where the link goes.');
+    if (!val('email')) return setErr('Please add your email — your Zoom link is sent there.');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('email'))) return setErr('That email does not look right — please check it, your Zoom link depends on it.');
+    if (!val('whatsapp')) return setErr('Please add your WhatsApp number, for the day-before reminder.');
     if (!validMY(val('whatsapp'))) return setErr('That does not look like a Malaysian mobile number. It should start 01 and be the number that has WhatsApp on it.');
     if (!val('company')) return setErr('Please add your company name.');
     if (!role) return setErr('Please choose your role.');
@@ -159,6 +161,7 @@ function RegistrationForm({ id, onDone }) {
       submissionId: submissionId.current,
       name: val('name'),
       company: val('company'),
+      email: val('email').trim().toLowerCase(),
       whatsapp: normaliseMY(val('whatsapp')),
       role,
       stage: val('stage'),
@@ -239,8 +242,10 @@ function RegistrationForm({ id, onDone }) {
             <Input id={`${id}-name`} label="Name" name="name" placeholder="Full name" />
             <Input id={`${id}-company`} label="Company" name="company" placeholder="Sdn Bhd" />
           </div>
+          <Input id={`${id}-email`} label="Email" name="email" type="email"
+            hint="Your Zoom link and calendar invite are sent here." placeholder="you@company.com" />
           <Input id={`${id}-whatsapp`} label="WhatsApp number" name="whatsapp" prefix="+60"
-            hint="Your joining link is sent here." placeholder="12 345 6789" />
+            hint="For the reminder the day before." placeholder="12 345 6789" />
           <Select id={`${id}-role`} label="Your role" name="role" placeholder="Select one" value={role}
             onChange={(e) => { setRole(e.target.value); setErr(''); }}
             options={['Owner', 'Director', 'Manager', 'Staff']} />
@@ -301,7 +306,7 @@ function RegistrationForm({ id, onDone }) {
           <p className="form-note">
             {step === 1
               ? 'Takes 30 seconds. 2 short steps, then you are in.'
-              : 'Your joining link and 1 reminder. Nothing else, ever.'}
+              : 'Your Zoom link by email, 1 WhatsApp reminder. Nothing else, ever.'}
           </p>
         </div>
       </div>
@@ -317,13 +322,13 @@ function ThankYou() {
           <div className="stack-16">
             <span className="eyebrow eyebrow-block" style={{ alignSelf: 'flex-start' }}>Registration confirmed</span>
             <h1 className="disp h1" style={{ fontSize: 'clamp(38px,4vw,56px)' }}>You’re registered.</h1>
-            <p className="lede measure">CKP will send your joining link to your WhatsApp, and 1 reminder the day before. Nothing else.</p>
+            <p className="lede measure">Your Zoom link and calendar invite are on their way to your email — check spam if they hide. CKP will WhatsApp you 1 reminder the day before. Nothing else.</p>
           </div>
           <div className="stack-24" style={{ borderTop: '3px solid var(--ink)', paddingTop: 32 }}>
             <p className="body strong-ink" style={{ margin: 0 }}>2 minutes now makes the hour worth far more to you:</p>
             <div className="ty-step">
               <b>01</b>
-              <p className="body" style={{ margin: 0 }}>Reply to that WhatsApp with the one thing about your company you feel least certain about. 1 sentence is enough. Jeremy reads every reply before the webinar and builds the most common ones straight into the session, so you get your answer without having to ask in front of anyone.</p>
+              <p className="body" style={{ margin: 0 }}>Reply to your confirmation email with the one thing about your company you feel least certain about. 1 sentence is enough. Jeremy reads every reply before the webinar and builds the most common ones straight into the session, so you get your answer without having to ask in front of anyone.</p>
             </div>
             <div className="ty-step">
               <b>02</b>

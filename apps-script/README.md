@@ -1,99 +1,58 @@
-# Connecting the form to a Google Sheet
+# Registrations -> Google Sheet + confirmation email
 
-The landing page is static — GitHub Pages serves files and runs nothing. So the
-form needs somewhere to POST. This uses a Google Apps Script Web App bound to
-your own spreadsheet: no server, no monthly fee, and the registrations never
-touch a third party.
+The landing page is static, so the form POSTs to a Google Apps Script Web App
+bound to a spreadsheet. v3 of the script also sends each registrant a
+confirmation email with the Zoom link and a calendar invite, and can send a
+day-before reminder. No server, no monthly fee, no third party touching the
+leads.
 
-Roughly ten minutes, and only you can do it — it needs your Google account.
+**v3 must be deployed under `chiakapartners@gmail.com`** — the email sends
+from whichever Google account owns the script, and that is the address the
+firm wants on it. This replaces the deployment that lived under the personal
+account; the swap is a fresh 10-minute setup, then one URL change in
+`config.jsx`.
 
-## 1. Open the script
+## Set up (log in as chiakapartners@gmail.com)
 
-Open the Google Sheet you want the registrations in, then **Extensions → Apps
-Script**. Delete the `function myFunction() {}` stub that is already there.
+1. Go to **sheets.new** — name the spreadsheet `CKP Webinar Registrations`.
+2. **Extensions → Apps Script**, delete the stub, paste the whole of
+   [`Code.gs`](Code.gs), **Save**.
+3. In the code, find `ZOOM_JOIN_URL` and paste the real Zoom **join** link
+   (`https://us02web.zoom.us/j/...`). NOT the `/meeting/register/` link — that
+   forces a second registration on Zoom's own form. Turn OFF "Require
+   registration" on the Zoom meeting to get the plain join link.
+   Until a real link is pasted, registrations are still saved but no email is
+   sent — nothing is ever lost to a mail problem.
+4. **Deploy → New deployment** → gear icon → **Web app**:
+   - Execute as: **Me**
+   - Who has access: **Anyone**  (NOT "Anyone with a Google account")
+5. Authorise (Advanced → Go to project → Allow). The scary screen is because
+   the script sends email as you — that is exactly what we want it to do.
+6. Copy the **Web app URL** (`…/exec`) and send it over; it goes into
+   `sheetEndpoint` in [`config.jsx`](../config.jsx).
+7. **Share stays Restricted.** The sheet now holds names, phones AND emails.
 
-## 2. Paste the code
+## After any code edit
 
-Copy the whole of [`Code.gs`](Code.gs) into the editor, replacing everything that
-was there. Nothing in it needs editing — the shared token is already filled in
-and matches `CFG.sheetToken` in `config.jsx`.
+Editing does nothing until: **Deploy → Manage deployments → pencil →
+Version: New version → Deploy.** The URL never changes.
 
-Press **Save** (the disk icon, or Ctrl/Cmd+S).
+## The day-before reminder
 
-## 3. Deploy it
+Run manually on 7 September: open the script editor, pick `sendReminders`
+in the toolbar dropdown, press **Run**. Or automate it: clock icon →
+Add Trigger → `sendReminders` → time-driven → specific date/time.
+One email per unique address; safe to run once.
 
-**Deploy → New deployment**, then set the type to **Web app** using the gear icon
-next to "Select type".
+## Quotas and honest limits
 
-| Field | Value |
-| --- | --- |
-| Description | `CKP webinar form` |
-| Execute as | **Me** |
-| Who has access | **Anyone** |
-
-**"Anyone" is not the same as "Anyone with a Google account".** Pick the first
-one. The second forces your visitors to sign in to Google before they can
-register, which will cost you nearly every registration.
-
-Google will ask you to authorise the script. It warns that the app is unverified
-because you wrote it yourself — go through **Advanced → Go to (project name)** and
-allow it.
-
-## 4. Copy the URL into the page
-
-Copy the **Web app URL**. It ends in `/exec`.
-
-Paste it into `sheetEndpoint` in [`config.jsx`](../config.jsx):
-
-```js
-sheetEndpoint: 'https://script.google.com/macros/s/AKfy…/exec',
-```
-
-Commit and push, and it is live.
-
-## 5. Check it works
-
-Open the `/exec` URL directly in a browser. A healthy deployment answers:
-
-```json
-{"ok":true,"service":"ckp-webinar-registrations","rows":0}
-```
-
-Then submit the real form once and confirm the row appears. The `Registrations`
-tab and its header row are created automatically on the first submission.
-
-## The one that catches everybody
-
-**Editing the code does nothing until you deploy a new version.** The old
-version keeps serving. After any change to `Code.gs`:
-
-**Deploy → Manage deployments →** pencil icon **→ Version: New version → Deploy**
-
-The URL stays the same, so you never need to touch `config.jsx` again.
-
-## What is stored
-
-One row per registration: timestamp (Kuala Lumpur), name, company, WhatsApp,
-role, the five qualifying answers, the areas picked, the ad source, the
-referrer, and a submission id.
-
-The WhatsApp number is normalised to `+60…` before it is sent, so the column is
-consistently dialable no matter how the person typed it.
-
-## Honest limits
-
-- **The endpoint URL is public.** It ships inside the page's JavaScript, as it
-  must for the browser to call it. The token is not security either — anyone who
-  views source can read both. A honeypot field and a required-field check stop
-  casual bots; a determined person could still post junk rows. At 40 seats that
-  is a nuisance you would notice and delete, not a breach.
-- **Apps Script is not instant.** A cold start can take a few seconds. The form
-  disables its button and shows "Saving your seat…" so nobody double-submits,
-  and gives up after 20 seconds with a retry.
-- **A retry is safe.** The page keeps the same submission id, and the script
-  ignores an id it has already written, so pressing the button twice cannot
-  create two rows for one person.
-- **This stores personal data.** Name, company, phone and role are collected and
-  retained in your Google account. `CFG.privacyUrl` is still an unresolved
-  placeholder, and a form collecting this should carry a privacy notice under
-  the PDPA. That is now a live obligation, not a to-do.
+- Free Gmail sends 100 emails/day via this API — fine for 40 seats, but do
+  not point extra tools at the same account's quota.
+- Mail failures never block a registration: the row is written first and the
+  email is best-effort on top. If someone reports no email, their address is
+  in the sheet — send it by hand.
+- The endpoint URL and token are public by design (they ship in the page
+  source). A honeypot plus required-field checks filter casual bots; junk
+  rows are a delete, not a breach.
+- A confirmation from a `@gmail.com` address can land under Promotions in
+  Gmail. The page's thank-you screen tells people to check spam.
