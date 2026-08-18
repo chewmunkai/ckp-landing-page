@@ -116,9 +116,13 @@ function doPost(e) {
 /**
  * Opening the /exec URL in a browser hits this. It confirms the deployment is
  * live and reachable without writing a row.
+ *
+ * Deliberately does NOT report the row count. The endpoint URL is public, so a
+ * count here would let anyone — including a competitor — watch how many
+ * registrations the campaign is producing. Read the sheet for the number.
  */
 function doGet() {
-  return json({ ok: true, service: 'ckp-webinar-registrations', rows: getSheet().getLastRow() - 1 });
+  return json({ ok: true, service: 'ckp-webinar-registrations' });
 }
 
 function getSheet() {
