@@ -14,7 +14,7 @@ const CFG = {
      While sheetEndpoint is empty the form refuses to submit rather than showing
      a thank-you screen it cannot back up — a visitor told they are registered
      when nothing was saved is worse than one told to try again. */
-  sheetEndpoint: 'https://script.google.com/macros/s/AKfycbxYqc5QW1IITts7yKltVLLfF92IrJwvC4M2JOJq4ljGiOx0XzJwLcVa3RULowopWSrxUw/exec',
+  sheetEndpoint: 'https://script.google.com/macros/s/AKfycbwDqoXy4AJUzpoJduMP3NRKyedtISGvJfTAffVs8NDo_fxc5e4SlJCPtcp_WExRq8G63w/exec',
   sheetToken: '01eb65b7e88f248c1c24de0b793e101d',
 
   privacyUrl: '{{PRIVACY_URL}}'     // TODO — real CKP privacy policy URL; shown as link text and href in the footer
