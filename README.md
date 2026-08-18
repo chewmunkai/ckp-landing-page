@@ -27,14 +27,18 @@ install step and no dependencies — `serve.js` uses only the Node standard libr
 
 GitHub Pages, from `main` at the repo root. Pushing to `main` redeploys.
 
-Two files exist only to make Pages work, and both must stay:
+One file exists only to make Pages work, and it must stay:
 
 - **`.nojekyll`** — Pages runs Jekyll by default, and Jekyll silently drops any path
   starting with an underscore. Without this, the whole `_ds/` design system 404s and
   the page renders blank.
-- **`index.html`** — a redirect to `CKP Webinar Landing.html`, whose name contains a
-  space and would otherwise only resolve as `CKP%20Webinar%20Landing.html`. The
-  filename is kept as-is because it is what the Claude Design project uses.
+
+The page is `index.html`, served directly at the root. It used to be called
+`CKP Webinar Landing.html` — the name the Claude Design project exports — with an
+`index.html` redirect in front of it. That cost every visitor a flash of "Taking you
+to the registration page…" and a `%20`-mangled URL, which is a poor look on a page
+paid traffic lands on. If you re-export from the design project, copy the contents
+into `index.html` rather than restoring the redirect.
 
 ## How it is put together
 
@@ -43,7 +47,7 @@ bundler. Scripts load in order and each one hangs its components off `window`.
 
 | Path | What it is |
 | --- | --- |
-| `CKP Webinar Landing.html` | The shell. Loads tokens, styles, then the scripts in order. |
+| `index.html` | The page itself. Loads tokens, styles, then the scripts in order. |
 | `config.jsx` | **Edit this first.** Date, time, seat counts, form embed, video links. Also `Countdown`, `SeatMeter` and `Reveal`. |
 | `form.jsx` | Registration form and the thank-you screen. |
 | `parts-1.jsx` | Header, hero, trust strip, sections 1–2. |

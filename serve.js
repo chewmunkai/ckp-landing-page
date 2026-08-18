@@ -12,7 +12,7 @@ const path = require('path');
 
 const ROOT = __dirname;
 const PORT = Number(process.env.PORT) || 4173;
-const ENTRY = '/CKP Webinar Landing.html';
+const ENTRY = '/index.html';
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
