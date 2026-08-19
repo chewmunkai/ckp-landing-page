@@ -1,6 +1,6 @@
 # CKP Webinar Landing Page
 
-**Live: <https://chewmunkai.github.io/ckp-landing-page/>**
+**Live: <https://webinar.ckpartners.com.my/>**
 
 Registration page for the free Chia, Ka & Partners webinar on 8 September 2026 —
 *"If LHDN asked you today, could you prove your company is compliant?"*
@@ -8,8 +8,8 @@ Registration page for the free Chia, Ka & Partners webinar on 8 September 2026 �
 It is the destination for a paid ad campaign, so the whole page is built around one
 action: register for the seat.
 
-> **This is a preview, not a live campaign target.** The form does not submit
-> anywhere yet and there is no conversion tracking — see *Before this goes live*.
+> The form saves to a Google Sheet and sends the confirmation email automatically.
+> Meta Pixel tracking is plumbed in and goes live when the pixel ID is pasted.
 
 ## Run it
 
