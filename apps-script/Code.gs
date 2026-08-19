@@ -160,46 +160,109 @@ function isRegLink() {
   return ZOOM_JOIN_URL.indexOf('/meeting/register') !== -1;
 }
 
-/** Thank-you email with the Zoom link and a calendar invite attached. */
+/** Thank-you email with the Zoom link and a calendar invite attached.
+ *  Layout is nested tables with inline styles only — the one dialect every
+ *  mail client renders. Square corners and the ink/crimson palette follow the
+ *  landing page, so the email reads as the same brand. */
 function sendConfirmation(body) {
   if (!/^https?:\/\//.test(ZOOM_JOIN_URL)) return; // Zoom link not pasted yet
   var to = String(body.email || '').trim();
   if (!to) return;
 
   var firstName = String(body.name || '').trim().split(/\s+/)[0] || 'there';
-  var subject = 'Your seat is confirmed \u2014 CKP webinar, 8 September, 3:00 PM';
+  var reg = isRegLink();
+  var subject = 'You’re in — CKP webinar, 8 September 3:00 PM · your Zoom access inside';
+  var F = "'Poppins',Arial,Helvetica,sans-serif";
+  var INK = '#0E1233', CRIMSON = '#F4064F', PAPER = '#FBFAF8', GRAY = '#6b7280';
+
+  var factRow = function (label, value) {
+    return '<tr>' +
+      '<td style="padding:11px 18px;border-bottom:1px solid #e8e6e1;font-family:' + F + ';font-size:10px;letter-spacing:2px;color:' + GRAY + ';text-transform:uppercase;white-space:nowrap">' + label + '</td>' +
+      '<td style="padding:11px 18px;border-bottom:1px solid #e8e6e1;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + INK + '">' + value + '</td></tr>';
+  };
+  var bullet = function (text) {
+    return '<tr><td valign="top" style="padding:5px 10px 5px 0;font-family:' + F + ';font-size:14px;color:' + CRIMSON + ';font-weight:bold">▪</td>' +
+      '<td style="padding:5px 0;font-family:' + F + ';font-size:14px;line-height:1.55;color:#33344a">' + text + '</td></tr>';
+  };
 
   var html =
-    '<div style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#1a1a2e;max-width:560px">' +
-    '<p>Hi ' + escapeHtml(firstName) + ',</p>' +
-    '<p>You\u2019re registered. Here is everything you need:</p>' +
-    '<p style="margin:20px 0;padding:16px 20px;border-left:4px solid #F4064F;background:#faf7f5">' +
-    '<b>' + escapeHtml(EVENT_TITLE) + '</b><br>' +
-    escapeHtml(EVENT_DATE_HUMAN) + '<br>Online \u00b7 cameras off \u00b7 nothing to prepare</p>' +
-    '<p style="margin:24px 0"><a href="' + ZOOM_JOIN_URL + '" ' +
-    'style="background:#F4064F;color:#ffffff;padding:13px 26px;text-decoration:none;font-weight:bold;display:inline-block">' +
-    (isRegLink() ? 'Get your Zoom link' : 'Join the webinar') + '</a></p>' +
-    (isRegLink()
-      ? '<p>One click left: the button opens Zoom, which confirms your seat and emails you your personal join link for the session.</p>' +
-        '<p>Zoom page: <a href="' + ZOOM_JOIN_URL + '">' + ZOOM_JOIN_URL + '</a></p>'
-      : '<p>Zoom link: <a href="' + ZOOM_JOIN_URL + '">' + ZOOM_JOIN_URL + '</a><br>' +
-        'Passcode: <b>' + escapeHtml(ZOOM_PASSCODE) + '</b></p>') +
-    '<p>The calendar invite is attached \u2014 open it and the session blocks itself into your calendar.</p>' +
-    '<p><b>One thing worth doing now:</b> reply to this email with the one thing about your company you feel least certain about. ' +
-    'One sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
-    '<p>See you on the 8th,<br>Chia, Ka &amp; Partners<br>' +
-    '<span style="color:#777;font-size:13px">Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur \u00b7 +603-9212 7856</span></p>' +
-    '</div>';
+    '<span style="display:none;max-height:0;overflow:hidden;mso-hide:all">Seat confirmed. Your Zoom access and calendar invite are inside.</span>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f2f0ec;padding:26px 10px"><tr><td align="center">' +
+
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border:3px solid ' + INK + '">' +
+
+    // header band
+    '<tr><td style="background:' + INK + ';border-bottom:4px solid ' + CRIMSON + ';padding:18px 32px">' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>' +
+    '<td style="font-family:' + F + ';font-size:15px;font-weight:bold;letter-spacing:1px;color:#ffffff">CHIA, KA &amp; PARTNERS</td>' +
+    '<td align="right" style="font-family:' + F + ';font-size:10px;font-weight:bold;letter-spacing:2px;color:' + CRIMSON + '">FREE WEBINAR</td>' +
+    '</tr></table></td></tr>' +
+
+    // body
+    '<tr><td style="padding:36px 32px 30px">' +
+    '<p style="margin:0 0 8px;font-family:' + F + ';font-size:11px;font-weight:bold;letter-spacing:2.5px;color:' + CRIMSON + ';text-transform:uppercase">Seat confirmed</p>' +
+    '<p style="margin:0 0 14px;font-family:' + F + ';font-size:29px;line-height:1.15;font-weight:bold;color:' + INK + '">You’re in, ' + escapeHtml(firstName) + '.</p>' +
+    '<p style="margin:0 0 24px;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">One of 40 seats is now yours. Everything you need is below — and the calendar invite is attached, so the hour can block itself into your diary before it fills with something else.</p>' +
+
+    // event facts card
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px solid ' + INK + ';border-left:5px solid ' + CRIMSON + ';margin:0 0 26px">' +
+    factRow('Topic', escapeHtml('If LHDN asked you today, could you prove your company is compliant?')) +
+    factRow('Date', 'Monday, 8 September 2026') +
+    factRow('Time', '3:00 – 4:00 PM (Malaysia)') +
+    factRow('Where', 'Online · Zoom · cameras off') +
+    '<tr><td style="padding:11px 18px;font-family:' + F + ';font-size:10px;letter-spacing:2px;color:' + GRAY + ';text-transform:uppercase">Cost</td>' +
+    '<td style="padding:11px 18px;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + CRIMSON + '">Free · 40 seats only</td></tr>' +
+    '</table>' +
+
+    // CTA
+    '<table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 0 10px"><tr>' +
+    '<td bgcolor="' + CRIMSON + '" style="border:2px solid ' + INK + '">' +
+    '<a href="' + ZOOM_JOIN_URL + '" style="display:block;padding:15px 34px;font-family:' + F + ';font-size:15px;font-weight:bold;letter-spacing:1.5px;color:#ffffff;text-decoration:none;text-transform:uppercase">' +
+    (reg ? 'Get your Zoom link' : 'Your Zoom join link') + '</a></td></tr></table>' +
+    (reg
+      ? '<p style="margin:0 0 26px;font-family:' + F + ';font-size:13px;line-height:1.5;color:' + GRAY + '">One click: Zoom confirms your seat and emails your personal join link. Button not working? ' +
+        '<a href="' + ZOOM_JOIN_URL + '" style="color:' + CRIMSON + '">Use this link.</a></p>'
+      : '<p style="margin:0 0 26px;font-family:' + F + ';font-size:13px;line-height:1.5;color:' + GRAY + '">Passcode: <b style="color:' + INK + '">' + escapeHtml(ZOOM_PASSCODE) + '</b> · Button not working? ' +
+        '<a href="' + ZOOM_JOIN_URL + '" style="color:' + CRIMSON + '">Use this link.</a></p>') +
+
+    // value bullets
+    '<p style="margin:0 0 10px;font-family:' + F + ';font-size:16px;font-weight:bold;color:' + INK + '">By 4:01 PM on 8 September, you\u2019ll know:</p>' +
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px">' +
+    bullet('Whether your structure — Sdn Bhd, Enterprise or LLP — still fits the business you actually run') +
+    bullet('Every LHDN and SSM deadline laid out, so nothing rests on anyone’s memory') +
+    bullet('Whether your books would survive a loan application, a tax estimate or an audit') +
+    '</table>' +
+
+    // VIP ask
+    '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + PAPER + ';border-left:4px solid ' + CRIMSON + ';margin:0 0 28px"><tr><td style="padding:18px 20px">' +
+    '<p style="margin:0 0 6px;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + INK + '">Make the hour about <span style="color:' + CRIMSON + '">your</span> company.</p>' +
+    '<p style="margin:0;font-family:' + F + ';font-size:14px;line-height:1.6;color:#33344a">Reply to this email with the one thing you feel least certain about — one sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
+    '</td></tr></table>' +
+
+    '<p style="margin:0;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">See you on the 8th,<br><b style="color:' + INK + '">Chia, Ka &amp; Partners</b></p>' +
+    '</td></tr>' +
+
+    // footer
+    '<tr><td style="background:' + INK + ';padding:16px 32px">' +
+    '<p style="margin:0;font-family:' + F + ';font-size:11px;line-height:1.7;color:#9a9db8">Chia, Ka &amp; Partners PLT (LLP0005573-LCA)<br>' +
+    'Level 16-03A, Menara MBMR, 1 Jalan Syed Putra, 58000 Kuala Lumpur · +603-9212 7856<br>' +
+    'You are receiving this because you registered at webinar.ckpartners.com.my</p>' +
+    '</td></tr></table>' +
+    '</td></tr></table>';
 
   var plain =
-    'Hi ' + firstName + ',\n\nYou\u2019re registered.\n\n' +
-    EVENT_TITLE + '\n' + EVENT_DATE_HUMAN + '\nOnline, cameras off, nothing to prepare.\n\n' +
-    (isRegLink()
-      ? 'One click left \u2014 open this Zoom page and it will email you your personal join link:\n' + ZOOM_JOIN_URL + '\n\n'
+    'Hi ' + firstName + ',\n\nYou’re in — one of 40 seats is yours.\n\n' +
+    EVENT_TITLE + '\nMonday, 8 September 2026, 3:00–4:00 PM (Malaysia)\nOnline, cameras off, nothing to prepare. Free.\n\n' +
+    (reg
+      ? 'One click left — open this Zoom page and it will email you your personal join link:\n' + ZOOM_JOIN_URL + '\n\n'
       : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n') +
-    'Reply to this email with the one thing about your company you feel least certain about \u2014 ' +
+    'You leave knowing:\n' +
+    '- whether your structure (Sdn Bhd, Enterprise, LLP) still fits your business\n' +
+    '- every LHDN and SSM deadline, off anyone’s memory\n' +
+    '- whether your books would survive a loan application, tax estimate or audit\n\n' +
+    'Make the hour about YOUR company: reply with the one thing you feel least certain about — ' +
     'Jeremy reads every reply and builds the most common ones into the session.\n\n' +
-    'See you on the 8th,\nChia, Ka & Partners';
+    'The calendar invite is attached.\n\nSee you on the 8th,\nChia, Ka & Partners';
 
   MailApp.sendEmail({
     to: to,
