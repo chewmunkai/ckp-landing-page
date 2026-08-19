@@ -322,7 +322,7 @@ function ThankYou() {
           <div className="stack-16">
             <span className="eyebrow eyebrow-block" style={{ alignSelf: 'flex-start' }}>Registration confirmed</span>
             <h1 className="disp h1" style={{ fontSize: 'clamp(38px,4vw,56px)' }}>You’re registered.</h1>
-            <p className="lede measure">Your Zoom link and calendar invite are on their way to your email — check spam if they hide. CKP will WhatsApp you 1 reminder the day before. Nothing else.</p>
+            <p className="lede measure">Your Zoom link and calendar invite are on their way to your email. Check spam if they hide. CKP will WhatsApp you 1 reminder the day before. Nothing else.</p>
           </div>
           <div className="stack-24" style={{ borderTop: '3px solid var(--ink)', paddingTop: 32 }}>
             <p className="body strong-ink" style={{ margin: 0 }}>2 minutes now makes the hour worth far more to you:</p>

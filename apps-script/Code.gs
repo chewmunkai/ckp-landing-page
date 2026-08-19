@@ -36,8 +36,8 @@ var REPLY_TO = 'enquiry@ckpartners.com.my';
 
 /** Event facts, used in the email and the calendar invite. Times are the
  *  UTC instants of 3:00–4:00 PM Kuala Lumpur (UTC+8) on 8 Sep 2026. */
-var EVENT_TITLE = 'CKP Webinar — If LHDN asked you today, could you prove your company is compliant?';
-var EVENT_DATE_HUMAN = 'Monday 8 September 2026, 3:00 PM \u2013 4:00 PM (Malaysia time)';
+var EVENT_TITLE = 'CKP Webinar: If LHDN asked you today, could you prove your company is compliant?';
+var EVENT_DATE_HUMAN = 'Monday 8 September 2026, 3:00 to 4:00 PM (Malaysia time)';
 var EVENT_START_UTC = '20260908T070000Z';
 var EVENT_END_UTC = '20260908T080000Z';
 
@@ -171,7 +171,7 @@ function sendConfirmation(body) {
 
   var firstName = String(body.name || '').trim().split(/\s+/)[0] || 'there';
   var reg = isRegLink();
-  var subject = 'You’re in — CKP webinar, 8 September 3:00 PM · your Zoom access inside';
+  var subject = 'You’re in 🎉 CKP webinar, 8 September 3:00 PM · your Zoom access inside';
   var F = "'Poppins',Arial,Helvetica,sans-serif";
   var INK = '#0E1233', CRIMSON = '#F4064F', PAPER = '#FBFAF8', GRAY = '#6b7280';
 
@@ -202,16 +202,16 @@ function sendConfirmation(body) {
     '<tr><td style="padding:36px 32px 30px">' +
     '<p style="margin:0 0 8px;font-family:' + F + ';font-size:11px;font-weight:bold;letter-spacing:2.5px;color:' + CRIMSON + ';text-transform:uppercase">Seat confirmed</p>' +
     '<p style="margin:0 0 14px;font-family:' + F + ';font-size:29px;line-height:1.15;font-weight:bold;color:' + INK + '">You’re in, ' + escapeHtml(firstName) + '.</p>' +
-    '<p style="margin:0 0 24px;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">One of 40 seats is now yours. Everything you need is below — and the calendar invite is attached, so the hour can block itself into your diary before it fills with something else.</p>' +
+    '<p style="margin:0 0 24px;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">One of 40 seats is now yours. Everything you need is below, and the calendar invite is attached so the hour can block itself into your diary before it fills with something else.</p>' +
 
     // event facts card
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:2px solid ' + INK + ';border-left:5px solid ' + CRIMSON + ';margin:0 0 26px">' +
     factRow('Topic', escapeHtml('If LHDN asked you today, could you prove your company is compliant?')) +
-    factRow('Date', 'Monday, 8 September 2026') +
-    factRow('Time', '3:00 – 4:00 PM (Malaysia)') +
-    factRow('Where', 'Online · Zoom · cameras off') +
+    factRow('Date', '📅️  Monday, 8 September 2026') +
+    factRow('Time', '🕒️  3:00 to 4:00 PM (Malaysia)') +
+    factRow('Where', '💻️  Online · Zoom · cameras off') +
     '<tr><td style="padding:11px 18px;font-family:' + F + ';font-size:10px;letter-spacing:2px;color:' + GRAY + ';text-transform:uppercase">Cost</td>' +
-    '<td style="padding:11px 18px;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + CRIMSON + '">Free · 40 seats only</td></tr>' +
+    '<td style="padding:11px 18px;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + CRIMSON + '">🎟️  Free · 40 seats only</td></tr>' +
     '</table>' +
 
     // CTA
@@ -228,7 +228,7 @@ function sendConfirmation(body) {
     // value bullets
     '<p style="margin:0 0 10px;font-family:' + F + ';font-size:16px;font-weight:bold;color:' + INK + '">By 4:01 PM on 8 September, you\u2019ll know:</p>' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:0 0 26px">' +
-    bullet('Whether your structure — Sdn Bhd, Enterprise or LLP — still fits the business you actually run') +
+    bullet('Whether your structure (Sdn Bhd, Enterprise or LLP) still fits the business you actually run') +
     bullet('Every LHDN and SSM deadline laid out, so nothing rests on anyone’s memory') +
     bullet('Whether your books would survive a loan application, a tax estimate or an audit') +
     '</table>' +
@@ -236,7 +236,7 @@ function sendConfirmation(body) {
     // VIP ask
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:' + PAPER + ';border-left:4px solid ' + CRIMSON + ';margin:0 0 28px"><tr><td style="padding:18px 20px">' +
     '<p style="margin:0 0 6px;font-family:' + F + ';font-size:14px;font-weight:bold;color:' + INK + '">Make the hour about <span style="color:' + CRIMSON + '">your</span> company.</p>' +
-    '<p style="margin:0;font-family:' + F + ';font-size:14px;line-height:1.6;color:#33344a">Reply to this email with the one thing you feel least certain about — one sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
+    '<p style="margin:0;font-family:' + F + ';font-size:14px;line-height:1.6;color:#33344a">Reply to this email with the one thing you feel least certain about. One sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
     '</td></tr></table>' +
 
     '<p style="margin:0;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">See you on the 8th,<br><b style="color:' + INK + '">Chia, Ka &amp; Partners</b></p>' +
@@ -251,16 +251,16 @@ function sendConfirmation(body) {
     '</td></tr></table>';
 
   var plain =
-    'Hi ' + firstName + ',\n\nYou’re in — one of 40 seats is yours.\n\n' +
-    EVENT_TITLE + '\nMonday, 8 September 2026, 3:00–4:00 PM (Malaysia)\nOnline, cameras off, nothing to prepare. Free.\n\n' +
+    'Hi ' + firstName + ',\n\nYou’re in! One of 40 seats is yours.\n\n' +
+    EVENT_TITLE + '\nMonday, 8 September 2026, 3:00 to 4:00 PM (Malaysia)\nOnline, cameras off, nothing to prepare. Free.\n\n' +
     (reg
-      ? 'One click left — open this Zoom page and it will email you your personal join link:\n' + ZOOM_JOIN_URL + '\n\n'
+      ? 'One click left: open this Zoom page and it will email you your personal join link:\n' + ZOOM_JOIN_URL + '\n\n'
       : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n') +
     'You leave knowing:\n' +
-    '- whether your structure (Sdn Bhd, Enterprise, LLP) still fits your business\n' +
-    '- every LHDN and SSM deadline, off anyone’s memory\n' +
-    '- whether your books would survive a loan application, tax estimate or audit\n\n' +
-    'Make the hour about YOUR company: reply with the one thing you feel least certain about — ' +
+    '* whether your structure (Sdn Bhd, Enterprise, LLP) still fits your business\n' +
+    '* every LHDN and SSM deadline, off anyone’s memory\n' +
+    '* whether your books would survive a loan application, tax estimate or audit\n\n' +
+    'Make the hour about YOUR company: reply with the one thing you feel least certain about. ' +
     'Jeremy reads every reply and builds the most common ones into the session.\n\n' +
     'The calendar invite is attached.\n\nSee you on the 8th,\nChia, Ka & Partners';
 
@@ -330,7 +330,7 @@ function sendReminders() {
     var firstName = String(r[nameCol - 1] || '').trim().split(/\s+/)[0] || 'there';
     MailApp.sendEmail({
       to: to,
-      subject: 'Tomorrow 3:00 PM \u2014 your CKP webinar seat',
+      subject: '⏰ Tomorrow 3:00 PM: your CKP webinar seat',
       body:
         'Hi ' + firstName + ',\n\nQuick reminder: the webinar is tomorrow.\n\n' +
         EVENT_TITLE + '\n' + EVENT_DATE_HUMAN + '\n\n' +
@@ -338,7 +338,7 @@ function sendReminders() {
           ? 'Zoom (your personal join link is in Zoom\u2019s confirmation email; lost it? this page resends it):\n' + ZOOM_JOIN_URL + '\n\n'
           : 'Join: ' + ZOOM_JOIN_URL + '\nPasscode: ' + ZOOM_PASSCODE + '\n\n') +
         'Cameras stay off and there is nothing to prepare. If you have not yet, ' +
-        'reply with the one question you want answered \u2014 there is still time for it to make the session.\n\n' +
+        'reply with the one question you want answered. There is still time for it to make the session.\n\n' +
         'See you tomorrow,\nChia, Ka & Partners',
       name: SENDER_NAME,
       replyTo: REPLY_TO
