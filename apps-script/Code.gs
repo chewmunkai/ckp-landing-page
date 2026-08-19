@@ -150,7 +150,7 @@ function doPost(e) {
  * the URL is public, and the count is campaign performance.
  */
 function doGet() {
-  return json({ ok: true, service: 'ckp-webinar-registrations' });
+  return json({ ok: true, service: 'ckp-webinar-registrations', v: 6 });
 }
 
 /** True when ZOOM_JOIN_URL is a registration link rather than a join link.
@@ -239,7 +239,11 @@ function sendConfirmation(body) {
     '<p style="margin:0;font-family:' + F + ';font-size:14px;line-height:1.6;color:#33344a">Reply to this email with the one thing you feel least certain about. One sentence is enough. Jeremy reads every reply and builds the most common ones into the session, so you get your answer without asking in front of anyone.</p>' +
     '</td></tr></table>' +
 
-    '<p style="margin:0;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">See you on the 8th,<br><b style="color:' + INK + '">Chia, Ka &amp; Partners</b></p>' +
+    '<p style="margin:0 0 22px;font-family:' + F + ';font-size:15px;line-height:1.6;color:#33344a">See you on the 8th,<br><b style="color:' + INK + '">Chia, Ka &amp; Partners</b></p>' +
+    // signature: credentials strip hosted on the campaign domain, then the
+    // firm's standard disclaimer as real text so it stays readable on phones
+    '<img src="https://webinar.ckpartners.com.my/assets/email-signature.jpg" width="536" alt="Xero Platinum Partner · Winner of Xero Partner of the Year Malaysia and Xero Advisory Partner of the Year, Xero Awards Asia 2025 · HRD Corp Registered Training Provider · ACCA Approved Employer · OA GOC Strategic Alliance Singapore · The 100 Most Influential Young Entrepreneurs" style="display:block;width:100%;max-width:536px;height:auto;border:0;margin:0 0 14px">' +
+    '<p style="margin:0;font-family:' + F + ';font-size:10px;line-height:1.5;color:#9a9db8">The content of this email is confidential and intended for the recipient specified in the message only. It is strictly forbidden to share any part of this message with any third party without written consent of the sender. If you received this message by mistake, please reply to this message and follow with its deletion, so that we can ensure such a mistake does not occur in the future.</p>' +
     '</td></tr>' +
 
     // footer
@@ -262,7 +266,9 @@ function sendConfirmation(body) {
     '* whether your books would survive a loan application, tax estimate or audit\n\n' +
     'Make the hour about YOUR company: reply with the one thing you feel least certain about. ' +
     'Jeremy reads every reply and builds the most common ones into the session.\n\n' +
-    'The calendar invite is attached.\n\nSee you on the 8th,\nChia, Ka & Partners';
+    'The calendar invite is attached.\n\nSee you on the 8th,\nChia, Ka & Partners\n\n' +
+    'Xero Platinum Partner | Winner of Xero Partner of the Year Malaysia and Xero Advisory Partner of the Year (Xero Awards Asia 2025)\n\n' +
+    'The content of this email is confidential and intended for the recipient specified in the message only.';
 
   MailApp.sendEmail({
     to: to,
