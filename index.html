@@ -44,6 +44,14 @@
   fbq('track', 'PageView');
 })();
 </script>
+<!-- The <noscript> half of Meta's canonical snippet. It repeats the ID because a
+     static tag cannot read the variable above; change one and change both. With
+     scripting on, the browser ignores this entirely, so it never double-counts
+     the PageView already sent. Its reach here is small by design — the page is
+     a React app, so a visitor without JavaScript sees an empty shell. -->
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=342096625454617&ev=PageView&noscript=1" alt=""
+/></noscript>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Display face. Only the 600 weight is loaded, so every consumer of
