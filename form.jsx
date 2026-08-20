@@ -76,6 +76,27 @@ function adSource() {
     .join(' | ');
 }
 
+/* Meta's Conversions API matches a server-sent event to a person using these
+   two cookies far more reliably than it can from a hashed email alone, and
+   Apps Script cannot read them itself — a Web App sees no request headers and
+   no cookies. So the browser has to hand them over in the payload. */
+function cookie(name) {
+  const m = document.cookie.match(new RegExp('(?:^|;\\s*)' + name + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1]) : '';
+}
+
+/* _fbc is what ties a registration back to the ad click that caused it — the
+   strongest signal the server side can carry. The pixel writes the cookie when
+   it sees ?fbclid, but only once it has loaded; if it was blocked or simply lost
+   the race, rebuild the value from the URL in Meta's documented
+   fb.1.<milliseconds>.<fbclid> shape rather than sending nothing. */
+function fbClickId() {
+  const fromCookie = cookie('_fbc');
+  if (fromCookie) return fromCookie;
+  const fbclid = new URLSearchParams(location.search).get('fbclid');
+  return fbclid ? 'fb.1.' + Date.now() + '.' + fbclid : '';
+}
+
 function newId() {
   if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
   return 'r-' + Date.now() + '-' + Math.random().toString(16).slice(2);
@@ -174,6 +195,13 @@ function RegistrationForm({ id, onDone }) {
       areas: areas.join(' | '),
       source: adSource(),
       referrer: document.referrer || '',
+      /* Carried so the Apps Script can send the same two conversions to the
+         Conversions API and have Meta deduplicate them against the browser's.
+         A Web App can read none of this server-side. */
+      fbp: cookie('_fbp'),
+      fbc: fbClickId(),
+      userAgent: navigator.userAgent,
+      pageUrl: location.href.split('#')[0],
       website: val('website') // honeypot: always empty for a human
     };
 

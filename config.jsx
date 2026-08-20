@@ -17,7 +17,7 @@ const CFG = {
   sheetEndpoint: 'https://script.google.com/macros/s/AKfycbwDqoXy4AJUzpoJduMP3NRKyedtISGvJfTAffVs8NDo_fxc5e4SlJCPtcp_WExRq8G63w/exec',
   sheetToken: '01eb65b7e88f248c1c24de0b793e101d',
 
-  privacyUrl: '{{PRIVACY_URL}}'     // TODO — real CKP privacy policy URL; shown as link text and href in the footer
+  privacyUrl: 'https://ckpartners.com.my/privacy-policy/' // shown as link text and href in the footer
 };
 
 /* Five client stories, shown under one heading with no per-tile caption.

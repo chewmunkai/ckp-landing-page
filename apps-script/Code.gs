@@ -136,6 +136,15 @@ function doPost(e) {
       // registration stands; the sheet has the address for a manual send
     }
 
+    // Same rule for the conversion events: the seat is booked either way, and
+    // a Meta outage must not read as a failed registration. See the Conversions
+    // API section at the bottom of this file.
+    try {
+      sendMetaConversions(body);
+    } catch (capiErr) {
+      // registration stands; the browser pixel already reported this conversion
+    }
+
     return json({ ok: true });
   } catch (err) {
     return json({ ok: false, error: String(err) });
@@ -401,4 +410,176 @@ function json(obj) {
   return ContentService
     .createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ==================== Meta Conversions API ====================
+ *
+ * The page already sends Lead and CompleteRegistration from the browser. Those
+ * are the events that get eaten: ad blockers, iOS, ITP and any tab closed
+ * mid-request. This sends the same two events again from here, where nothing
+ * can block them, and Meta collapses each duplicate pair back into one.
+ *
+ * Deduplication keys on event_name AND event_id together, so the shared
+ * submissionId is enough for both events — Lead dedupes against the browser's
+ * Lead, CompleteRegistration against its own. Send a different id here and
+ * every registration counts twice.
+ *
+ * This runs inline, before the visitor's response is returned, which costs a
+ * few hundred milliseconds. That is safe rather than merely acceptable: the row
+ * is already written by the time we get here, and a browser that gives up and
+ * retries sends the same submissionId, which alreadyRecorded() turns into a
+ * no-op. Nothing here can cost a registration.
+ */
+
+var META_PIXEL_ID = '342096625454617';
+var META_API_VERSION = 'v21.0';
+
+/** The token is a real secret and this file is public in the landing page
+ *  repository, so it lives in Script Properties instead:
+ *  Project Settings > Script Properties > META_CAPI_TOKEN.
+ *  Until it is set every call below is a no-op, so deploying this before you
+ *  have a token changes nothing. */
+function metaToken() {
+  return PropertiesService.getScriptProperties().getProperty('META_CAPI_TOKEN') || '';
+}
+
+/** Optional. While META_TEST_EVENT_CODE is set, events land in Events Manager >
+ *  Test Events and do not count as real conversions. Delete the property to go
+ *  live — leaving it set means the campaign never sees these events. */
+function metaTestCode() {
+  return PropertiesService.getScriptProperties().getProperty('META_TEST_EVENT_CODE') || '';
+}
+
+/** Lowercase hex SHA-256, the only encoding Meta accepts for match keys.
+ *  computeDigest hands back SIGNED bytes, so anything above 0x7F arrives
+ *  negative; the +256 %256 puts it back in range. Skip that and roughly half
+ *  the hashes come out malformed and silently match nobody. */
+function sha256Hex(value) {
+  if (!value) return '';
+  var bytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, value, Utilities.Charset.UTF_8);
+  var hex = '';
+  for (var i = 0; i < bytes.length; i++) {
+    var b = (bytes[i] + 256) % 256;
+    hex += (b < 16 ? '0' : '') + b.toString(16);
+  }
+  return hex;
+}
+
+/**
+ * Match keys, normalised the way Meta specifies before hashing: trimmed,
+ * lowercased, punctuation-free. Normalising differently to Meta is the usual
+ * reason a technically correct integration matches nobody.
+ *
+ * fbp and fbc are identifiers Meta issued itself, so they are sent raw —
+ * hashing them would destroy the match.
+ */
+function metaUserData(body) {
+  var user = {};
+
+  var email = String(body.email || '').trim().toLowerCase();
+  if (email) user.em = [sha256Hex(email)];
+
+  // normaliseMY() stores +60123456789; Meta wants digits only, country code
+  // included, no plus sign.
+  var phone = String(body.whatsapp || '').replace(/\D/g, '');
+  if (phone) user.ph = [sha256Hex(phone)];
+
+  /* Meta wants first and last name separately. Splitting a Malaysian name on
+     whitespace is a rough guess — it mishandles "bin"/"binti" and Chinese name
+     order — but match keys are scored independently, so a wrong last name is
+     ignored rather than penalised, and a right one is a free extra signal. */
+  var parts = String(body.name || '').trim().toLowerCase().split(/\s+/).filter(String);
+  if (parts.length) user.fn = [sha256Hex(parts[0])];
+  if (parts.length > 1) user.ln = [sha256Hex(parts.slice(1).join(' '))];
+
+  user.country = [sha256Hex('my')];
+
+  var fbp = String(body.fbp || '').trim();
+  if (fbp) user.fbp = fbp;
+  var fbc = String(body.fbc || '').trim();
+  if (fbc) user.fbc = fbc;
+
+  /* A Web App never sees the caller's IP, so client_ip_address cannot be filled
+     from here and is left out rather than faked with the server's own address,
+     which would match the wrong person. The user agent comes from the payload. */
+  var ua = String(body.userAgent || '').trim();
+  if (ua) user.client_user_agent = ua;
+
+  return user;
+}
+
+/** The two conversions, built as one pair so they cannot drift apart. */
+function metaEvents(body) {
+  var user = metaUserData(body);
+  var eventId = String(body.submissionId || '');
+  var url = String(body.pageUrl || '').trim() || 'https://webinar.ckpartners.com.my/';
+  var now = Math.floor(new Date().getTime() / 1000);
+
+  return ['Lead', 'CompleteRegistration'].map(function (eventName) {
+    return {
+      event_name: eventName,
+      event_time: now,
+      event_id: eventId,          // must equal the browser's eventID
+      event_source_url: url,
+      action_source: 'website',
+      user_data: user,
+      custom_data: {
+        content_name: 'CKP webinar 8 Sep 2026',
+        currency: 'MYR',
+        value: 0
+      }
+    };
+  });
+}
+
+/**
+ * Best-effort by design. Every failure path returns quietly: a registration is
+ * worth more than a conversion event, and the row is already saved.
+ */
+function sendMetaConversions(body) {
+  var token = metaToken();
+  if (!token) return;                                  // not configured yet
+
+  var eventId = String(body.submissionId || '').trim();
+  if (!eventId) return;                                // without it, Meta would double-count
+
+  var payload = { data: metaEvents(body), access_token: token };
+  var testCode = metaTestCode();
+  if (testCode) payload.test_event_code = testCode;
+
+  var url = 'https://graph.facebook.com/' + META_API_VERSION + '/' + META_PIXEL_ID + '/events';
+  var res = UrlFetchApp.fetch(url, {
+    method: 'post',
+    contentType: 'application/json',
+    payload: JSON.stringify(payload),
+    muteHttpExceptions: true                           // read the error instead of throwing
+  });
+
+  var code = res.getResponseCode();
+  if (code < 200 || code >= 300) {
+    // Visible under Executions in the Apps Script editor. Meta explains refusals
+    // in the body, so log it rather than just the status.
+    console.error('Meta CAPI ' + code + ': ' + res.getContentText());
+  }
+}
+
+/**
+ * Run this once from the editor after setting META_CAPI_TOKEN. It sends a
+ * throwaway registration so you can confirm the wiring end to end. Set
+ * META_TEST_EVENT_CODE first and it shows up in Events Manager > Test Events
+ * without touching real conversion counts.
+ */
+function testMetaConversions() {
+  if (!metaToken()) {
+    console.log('META_CAPI_TOKEN is not set — nothing was sent.');
+    return;
+  }
+  sendMetaConversions({
+    submissionId: 'capi-selftest-' + new Date().getTime(),
+    name: 'Test Lead',
+    email: 'test@example.com',
+    whatsapp: '+60123456789',
+    pageUrl: 'https://webinar.ckpartners.com.my/'
+  });
+  console.log('Sent. Check Events Manager > Test Events, or Executions for an error.');
 }

@@ -29,18 +29,23 @@ Still open, in the order that matters:
   set must optimise for exactly one. Splitting the objective across both halves the
   signal each receives. Do not sum them in reports either — one registration
   produces one of each.
-- **Conversions API.** The pixel is browser-only, so ad blockers, iOS and ITP eat a
-  meaningful share of conversions. The Apps Script that writes the row is the natural
-  place to POST the same two events server-side, reusing `submissionId` as
-  `event_id`. Deduplication keys on event name *and* id, so the one id covers both.
+- **Conversions API — built, needs a token.** `apps-script/Code.gs` now sends the
+  same two events server-side, hashed, reusing `submissionId` as `event_id` so Meta
+  deduplicates each pair rather than double-counting. It stays a no-op until
+  `META_CAPI_TOKEN` is set in Script Properties; setup and the self-test are in
+  [`apps-script/README.md`](apps-script/README.md).
+- **Verify the domain and rank the events.** For iOS traffic, `ckpartners.com.my`
+  must be verified in Business Settings and the 8 events ranked in Events Manager,
+  or iOS conversions are dropped or delayed. `Lead` is new on this pixel and almost
+  certainly is not in that list yet. Business Manager config, no code.
 - **GA4**, for the traffic picture the pixel does not give.
 
-### 3. No privacy policy link
+### 3. Privacy policy link — done
 
-`CFG.privacyUrl` is still `{{PRIVACY_URL}}`. The footer link is now **suppressed**
-rather than rendering a dead `{{PRIVACY_URL}}` href — but a form collecting name,
-phone, company and role should carry a privacy notice under the PDPA. Set the real
-URL in `config.jsx`.
+`CFG.privacyUrl` points at <https://ckpartners.com.my/privacy-policy/> and the
+footer renders it. This matters more now that the Conversions API sends hashed
+contact details to Meta: a form collecting name, phone, company and role needs a
+privacy notice under the PDPA.
 
 ### 4. The session language is never stated
 

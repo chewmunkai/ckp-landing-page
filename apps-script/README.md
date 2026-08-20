@@ -44,6 +44,46 @@ in the toolbar dropdown, press **Run**. Or automate it: clock icon →
 Add Trigger → `sendReminders` → time-driven → specific date/time.
 One email per unique address; safe to run once.
 
+## Meta Conversions API (server-side conversions)
+
+The page already reports `Lead` and `CompleteRegistration` from the browser.
+The script sends the same two events again from Google's servers, where ad
+blockers, iOS and a closed tab cannot stop them, and Meta collapses each pair
+back into one using the shared submission ID. Expect the gap it recovers to be
+the conversions the browser was losing, not extra ones.
+
+**Nothing happens until you add a token**, so this section is safe to skip
+until you want it. Without `META_CAPI_TOKEN` the code is a no-op.
+
+1. Events Manager → the pixel `342096625454617` → **Settings** → scroll to
+   **Conversions API** → **Generate access token**. Copy it.
+2. Apps Script editor → **Project Settings** (gear, left rail) → **Script
+   Properties** → **Add script property**:
+   - `META_CAPI_TOKEN` = the token you just copied
+3. *(Recommended for the first run)* add a second property so events land in
+   Test Events instead of counting for real:
+   - `META_TEST_EVENT_CODE` = the code from Events Manager → **Test Events**
+4. Pick `testMetaConversions` in the editor's function dropdown and press
+   **Run**. It sends one throwaway registration. Watch it appear under Test
+   Events; if nothing shows, **Executions** in the left rail has the error.
+5. **Delete `META_TEST_EVENT_CODE` when you are done.** While it is set, these
+   events never count as real conversions and the campaign cannot optimise
+   towards them.
+6. Redeploy (see *After any code edit*) so live registrations use the new code.
+
+Notes worth knowing:
+
+- The token is a real secret. It lives in Script Properties and never in
+  `Code.gs`, because that file is public in the landing page repository. If it
+  ever leaks, revoke it on the same Events Manager screen.
+- Email, phone and name are **SHA-256 hashed** before they leave Google —
+  Meta receives no readable personal data. The `_fbp` / `_fbc` cookies are
+  sent raw because Meta issued them itself and hashing would break the match.
+- The visitor's IP is not sent. A Web App cannot see it, and sending Google's
+  own address would match the wrong person.
+- A Meta outage cannot cost a registration: the row is written first and this
+  is best-effort on top, exactly like the confirmation email.
+
 ## Quotas and honest limits
 
 - Free Gmail sends 100 emails/day via this API — fine for 40 seats, but do
