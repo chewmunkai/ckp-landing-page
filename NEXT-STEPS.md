@@ -18,17 +18,21 @@ the custom form is on-brand, has the conditional logic, and can be tracked.
 ### 2. Tracking is browser-only
 
 **Done:** Meta Pixel `342096625454617` fires on load, `RegistrationStep2` on reaching
-step 2, and `CompleteRegistration` once the sheet write is confirmed. The conversion
-carries an `eventID` so a server-side feed can deduplicate against it.
+step 2, and then both `Lead` and `CompleteRegistration` once the sheet write is
+confirmed. Both conversions carry the same `eventID` so a server-side feed can
+deduplicate against them.
 
 Still open, in the order that matters:
 
+- **Point the campaign at one conversion event, not both.** `Lead` and
+  `CompleteRegistration` describe the same registration under two names, so the ad
+  set must optimise for exactly one. Splitting the objective across both halves the
+  signal each receives. Do not sum them in reports either — one registration
+  produces one of each.
 - **Conversions API.** The pixel is browser-only, so ad blockers, iOS and ITP eat a
   meaningful share of conversions. The Apps Script that writes the row is the natural
-  place to POST the same event server-side, reusing `submissionId` as `event_id`.
-- **Confirm the event name matches the campaign.** The ad set must optimise for
-  `CompleteRegistration`. If it is set to `Lead`, either repoint the campaign or
-  change the event here — the two must agree or optimisation gets no signal.
+  place to POST the same two events server-side, reusing `submissionId` as
+  `event_id`. Deduplication keys on event name *and* id, so the one id covers both.
 - **GA4**, for the traffic picture the pixel does not give.
 
 ### 3. No privacy policy link

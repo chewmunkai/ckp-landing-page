@@ -9,8 +9,8 @@ It is the destination for a paid ad campaign, so the whole page is built around 
 action: register for the seat.
 
 > The form saves to a Google Sheet and sends the confirmation email automatically.
-> Meta Pixel `342096625454617` is live, firing PageView, RegistrationStep2 and
-> CompleteRegistration.
+> Meta Pixel `342096625454617` is live, firing PageView, RegistrationStep2, and
+> both Lead and CompleteRegistration on a confirmed registration.
 
 ## Run it
 
