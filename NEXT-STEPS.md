@@ -15,14 +15,21 @@ Either paste the Zoho/HubSpot/Google Form embed URL into `CFG.formEmbedUrl`, or 
 the styled form to a real endpoint before `onDone()`. The second is worth the work:
 the custom form is on-brand, has the conditional logic, and can be tracked.
 
-### 2. Nothing is tracked
+### 2. Tracking is browser-only
 
-No Meta Pixel, no GA4, no conversion event. Cost per registration is unmeasurable,
-the campaign cannot be optimised, and there is no retargeting audience of people who
-visited and did not register.
+**Done:** Meta Pixel `342096625454617` fires on load, `RegistrationStep2` on reaching
+step 2, and `CompleteRegistration` once the sheet write is confirmed. The conversion
+carries an `eventID` so a server-side feed can deduplicate against it.
 
-Minimum: pixel on load, plus a `CompleteRegistration` / `generate_lead` event fired
-where `onDone()` runs.
+Still open, in the order that matters:
+
+- **Conversions API.** The pixel is browser-only, so ad blockers, iOS and ITP eat a
+  meaningful share of conversions. The Apps Script that writes the row is the natural
+  place to POST the same event server-side, reusing `submissionId` as `event_id`.
+- **Confirm the event name matches the campaign.** The ad set must optimise for
+  `CompleteRegistration`. If it is set to `Lead`, either repoint the campaign or
+  change the event here — the two must agree or optimisation gets no signal.
+- **GA4**, for the traffic picture the pixel does not give.
 
 ### 3. No privacy policy link
 

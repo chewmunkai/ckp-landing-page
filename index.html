@@ -28,11 +28,12 @@
      on this page waits for React and Babel to download and compile (~3 MB), and
      a PageView that fires after that misses everyone who bounced first, which
      both undercounts traffic and starves the retargeting audience.
-     Replace PASTE_PIXEL_ID_HERE with the ID from Events Manager. Until you do,
-     the guard below keeps the whole thing inert — no requests, no errors. -->
+     The guard keeps the block inert if the ID is ever blanked — no requests,
+     no errors — and every fbq() call elsewhere is written to no-op when the
+     pixel did not load. -->
 <script>
 (function () {
-  var PIXEL_ID = 'PASTE_PIXEL_ID_HERE';
+  var PIXEL_ID = '342096625454617'; // CKP Ad Account's Pixel
   if (!/^\d+$/.test(PIXEL_ID)) return; // not configured yet
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
   n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;

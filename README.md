@@ -9,7 +9,8 @@ It is the destination for a paid ad campaign, so the whole page is built around 
 action: register for the seat.
 
 > The form saves to a Google Sheet and sends the confirmation email automatically.
-> Meta Pixel tracking is plumbed in and goes live when the pixel ID is pasted.
+> Meta Pixel `342096625454617` is live, firing PageView, RegistrationStep2 and
+> CompleteRegistration.
 
 ## Run it
 
@@ -69,8 +70,8 @@ Tracked in `NEXT-STEPS.md`, but the three that block the campaign:
 1. **The form does not submit anywhere.** It shows the thank-you screen without
    sending the data. Every registration from a paid click is currently lost. Set
    `CFG.formEmbedUrl`, or POST the styled form to a real endpoint.
-2. **Nothing is tracked.** No Meta Pixel, no GA4, no conversion event — so cost per
-   registration is unmeasurable and there is no retargeting audience.
+2. **Browser-only tracking.** The Meta Pixel is live, but there is no GA4 and no
+   Conversions API feed, so events lost to ad blockers and iOS never arrive.
 3. **`CFG.privacyUrl` is still `{{PRIVACY_URL}}`** and renders literally in the footer.
 
 `NEXT-STEPS.md` also covers page weight, social preview tags, form validation and
